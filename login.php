@@ -3,48 +3,34 @@
 $dsn = 'mysql:host=localhost;dbname=workout;charset=utf8';
 
 session_start();
+
+// GETでアクセスしたときの初期メッセージ
 $message = 'ユーザー名とパスワードを入力してください';
+$error_msg_name = '';
+$error_msg_pass = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$name = $_POST['name'];
 	$pass = $_POST['pass'];
 
 	try {
-		// name = :name のレコード数を取得
+		// ユーザー登録がある（対象のレコードがある）場合、ユーザー名とパスワードが合致するレコード数を取得
 		$pdo = new PDO($dsn, 'root', '');
-		$sql = 'SELECT COUNT(*) FROM users WHERE name = :name';
+		$sql = 'SELECT COUNT(*) FROM users WHERE name = :name and password = :pass';
 		$stmt = $pdo->prepare($sql);
 		$stmt->bindValue(':name', $name);
+		$stmt->bindValue(':pass', $pass);
 		$stmt->execute();
 		$result = $stmt->fetch();
 
-		if ($result['COUNT(*)'] == 0) {
-			// ユーザー未登録（対象のレコードが0）の場合
-			$message = 'ユーザー名が違います。ユーザー登録をされていない方は先にユーザー登録をしてください。';
+		if ($result['COUNT(*)'] == 1) {
+			// ユーザー名とパスワードが一致する（対象のレコードが1つある）の場合、ログイン処理を行う
+			$_SESSION['login_name'] = $name;
+			header('Location: index.php');
+			exit;
 		} else {
-			// ユーザー登録がある（対象のレコードがある）場合、ユーザー名とパスワードが合致するレコード数を取得
-			$sql = 'SELECT COUNT(*) FROM users WHERE name = :name and password = :pass';
-			$stmt = $pdo->prepare($sql);
-			$stmt->bindValue(':name', $name);
-			$stmt->bindValue(':pass', $pass);
-			$stmt->execute();
-			$result = $stmt->fetch();
-
-			if ($result['COUNT(*)'] == 1) {
-				// ユーザー名とパスワードが一致する（対象のレコードが1つある）の場合、ログイン処理
-				$_SESSION['login_name'] = $name;
-				// $sql = 'SELECT id FROM users WHERE name = :name and password = :pass';
-				// $stmt = $pdo->prepare($sql);
-				// $stmt->bindValue(':name', $name);
-				// $stmt->bindValue(':pass', $pass);
-				// $result = $stmt->fetch();
-				// $_SESSION['login_id'] = $result['id'];
-				header('Location: index.php');
-				exit;
-			} else {
-				// ユーザー名とパスワードが一致しない（対象のレコードがない）の場合
-				$message = 'パスワードが違います';
-			}
+			// ユーザー名とパスワードが一致しない（対象のレコードがない）の場合
+			$message = 'ユーザー名、またはパスワードが違います。ユーザー登録をされていない方は先にユーザー登録をしてください。';
 		}
 	} catch (PDOException $e) {
 		// DBアクセスに失敗した場合、エラーメッセージを表示
@@ -63,28 +49,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 
 <body>
-	<h1>ログイン</h1>
+	<!-- ヘッダー -->
+	<?php require_once('header.php') ?>
+
+	<h2>ログイン</h2>
 	<p><?= $message ?></p>
-	<table>
-		<form method="post">
-			<tr>
-				<th><label>USERNAME : </label></th>
-				<td><input type="text" name="name"></td>
-			</tr>
-			<tr>
-				<th><label>PASSWORD : </label></th>
-				<td><input type="password" name="pass"></td>
-			</tr>
-			<tr>
-				<th></th>
-				<td><input type="submit" value="ログイン"></td>
-			</tr>
-
-		</form>
-	</table>
-
-	<!-- ヘッダーが完成するまでの臨時 -->
-	<a href="logout.php">ログアウト</a>
+	<form method="post">
+		<div>
+			<label>ユーザー名</label>
+			<input type="text" name="name">
+		</div>
+		<div>
+			<label>パスワード</label>
+			<input type="password" name="pass">
+		</div>
+		<input type="submit" value="ログイン">
+	</form>
 
 </body>
 

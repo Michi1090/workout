@@ -8,10 +8,10 @@
 </head>
 
 <body>
-    <h1>インデックスページ</h1>
+    <!-- ヘッダー -->
+    <?php require_once('header.php') ?>
 
-    <!-- ヘッダーが完成するまでの臨時 -->
-    <a href="logout.php">ログアウト</a>
+    <h2>インデックスページ</h2>
 
 </body>
 
