@@ -1,35 +1,39 @@
 <?php
 
-$dsn = 'mysql:host=localhost;dbname=workout;charset=utf8';
-
 session_start();
 
-// GETでアクセスしたときの初期メッセージ
-$message = 'ユーザー名とパスワードを入力してください';
-$error_msg_name = '';
-$error_msg_pass = '';
+// ログイン状態のとき、インデックスページへリダイレクトする
+if (isset($_SESSION['id'])) {
+	header('Location:index.php');
+	exit;
+}
 
+$message = 'ユーザー名とパスワードを入力してください';
+
+// フォームから値が入力された場合、ログイン判定を行う
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$name = $_POST['name'];
 	$pass = $_POST['pass'];
 
 	try {
-		// ユーザー登録がある（対象のレコードがある）場合、ユーザー名とパスワードが合致するレコード数を取得
+		// ユーザー名とパスワードが合致するレコードを取得
+		$dsn = 'mysql:host=localhost;dbname=workout;charset=utf8';
 		$pdo = new PDO($dsn, 'root', '');
-		$sql = 'SELECT COUNT(*) FROM users WHERE name = :name and password = :pass';
+		$sql = 'SELECT * FROM users WHERE name = :name and password = :pass';
 		$stmt = $pdo->prepare($sql);
 		$stmt->bindValue(':name', $name);
 		$stmt->bindValue(':pass', $pass);
 		$stmt->execute();
 		$result = $stmt->fetch();
 
-		if ($result['COUNT(*)'] == 1) {
-			// ユーザー名とパスワードが一致する（対象のレコードが1つある）の場合、ログイン処理を行う
-			$_SESSION['login_name'] = $name;
+		if ($result != false) {
+			// 対象のレコードが存在する（$resultの戻り値が存在する）場合、ログイン処理を行う
+			$_SESSION['id'] = $result['id'];
+			$_SESSION['name'] = $result['name'];
 			header('Location: index.php');
 			exit;
 		} else {
-			// ユーザー名とパスワードが一致しない（対象のレコードがない）の場合
+			// 対象のレコードが存在しない（$resultの戻り値がfalse）場合
 			$message = 'ユーザー名、またはパスワードが違います。ユーザー登録をされていない方は先にユーザー登録をしてください。';
 		}
 	} catch (PDOException $e) {

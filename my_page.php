@@ -3,14 +3,13 @@
 session_start();
 
 if (isset($_SESSION['name'])) {
-    // ログイン状態のとき
-    $message = $_SESSION['name'] . ' の筋トレログ一覧';
+    // ログイン状態のとき、メッセージを表示
+    $message = 'ようこそ、' . $_SESSION['name'] . 'さん！</br>こちらのページからパスワードの変更とユーザー登録の削除を行えます。';
 } else {
     // ログアウト状態のとき、ログインページへリダイレクトする
     header('Location:login.php');
     exit;
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -26,8 +25,12 @@ if (isset($_SESSION['name'])) {
     <!-- ヘッダー -->
     <?php require_once('header.php') ?>
 
-    <h2>インデックスページ</h2>
+    <h2>マイページ</h2>
     <p><?= $message ?></p>
+    <div>
+        <a href="change_password.php">パスワード変更</a>
+        <a href="delete_user.php">ユーザー登録削除</a>
+    </div>
 
 </body>
 
