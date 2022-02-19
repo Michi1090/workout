@@ -20,6 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pass = $_POST['pass'];
     $pass_check = $_POST['pass_check'];
 
+    require_once('validation.php');
+    $error_msg_name = passCheck($name);
+    $error_msg_pass = passCheck($pass);
+    $error_msg_pass_check = passCheck($pass_check);
+
     try {
         // name = :name のレコード数を取得
         $dsn = 'mysql:host=localhost;dbname=workout;charset=utf8';
@@ -66,6 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // DBアクセスに失敗した場合、エラーメッセージを表示
         $message = $e->getMessage() . '<br/>時間をおいてから再度お試しください。';
     }
+}
 }
 ?>
 
