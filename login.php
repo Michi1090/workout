@@ -1,6 +1,9 @@
 <?php
 
+// DB、及びセッション接続
+require_once('db_connect.php');
 session_start();
+session_regenerate_id();
 
 // ログイン状態のとき、インデックスページへリダイレクトする
 if (isset($_SESSION['id'])) {
@@ -8,37 +11,29 @@ if (isset($_SESSION['id'])) {
 	exit;
 }
 
-$message = 'ユーザー名とパスワードを入力してください';
-
 // フォームから値が入力された場合、ログイン判定を行う
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	$name = $_POST['name'];
-	$pass = $_POST['pass'];
+	// HTMLのエスケープ処理
+	require_once('sanitize.php');
+	$post = escapeHtml($_POST);
+	$name = $post['name'];
+	$pass = $post['pass'];
 
-	try {
-		// ユーザー名とパスワードが合致するレコードを取得
-		$dsn = 'mysql:host=localhost;dbname=workout;charset=utf8';
-		$pdo = new PDO($dsn, 'root', '');
-		$sql = 'SELECT * FROM users WHERE name = :name and password = :pass';
-		$stmt = $pdo->prepare($sql);
-		$stmt->bindValue(':name', $name);
-		$stmt->bindValue(':pass', $pass);
-		$stmt->execute();
-		$result = $stmt->fetch();
+	$sql = 'SELECT * FROM users WHERE name = :name';
+	$stmt = $pdo->prepare($sql);
+	$stmt->bindValue(':name', $name, PDO::PARAM_STR);
+	$stmt->execute();
+	$result = $stmt->fetch();
 
-		if ($result != false) {
-			// 対象のレコードが存在する（$resultの戻り値が存在する）場合、ログイン処理を行う
-			$_SESSION['id'] = $result['id'];
-			$_SESSION['name'] = $result['name'];
-			header('Location: index.php');
-			exit;
-		} else {
-			// 対象のレコードが存在しない（$resultの戻り値がfalse）場合
-			$message = 'ユーザー名、またはパスワードが違います。ユーザー登録をされていない方は先にユーザー登録をしてください。';
-		}
-	} catch (PDOException $e) {
-		// DBアクセスに失敗した場合、エラーメッセージを表示
-		$message = $e->getMessage() . '<br/>時間をおいてから再度お試しください。';
+	if (password_verify($pass, $result['password'])) {
+		// パスワードが一致する場合、ログイン処理を行う
+		$_SESSION['id'] = $result['id'];
+		$_SESSION['name'] = $result['name'];
+		header('Location: index.php');
+		exit;
+	} else {
+		// パスワードが一致しない場合
+		$error = '※ユーザー名、またはパスワードが違います。ユーザー登録をされていない方は先にユーザー登録をしてください。';
 	}
 }
 ?>
@@ -57,15 +52,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	<?php require_once('header.php') ?>
 
 	<h2>ログイン</h2>
-	<p><?= $message ?></p>
+	<p>ユーザー名とパスワードを入力してください</p>
+	<?php if(isset($error)): ?>
+		<p style="color: red;"><?= $error ?></p>
+	<?php endif ?>
 	<form method="post">
 		<div>
 			<label>ユーザー名</label>
-			<input type="text" name="name">
+			<input type="text" name="name" required>
 		</div>
 		<div>
 			<label>パスワード</label>
-			<input type="password" name="pass">
+			<input type="password" name="pass" required>
 		</div>
 		<input type="submit" value="ログイン">
 	</form>

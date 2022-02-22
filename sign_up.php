@@ -20,7 +20,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pass = $post['pass'];
     $pass_check = $post['pass_check'];
 
-    // バリデーション
+    /* バリデーション */
+    // name = :name のレコード数を取得
+    $sql = 'SELECT COUNT(*) FROM users WHERE name = :name';
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+    $stmt->execute();
+    $result = $stmt->fetch();
+
+    // 入力されたユーザー名がテーブルに存在する（登録済み）の場合
+    if ($result['COUNT(*)'] == 1) {
+        $errors['name'] = '※このユーザー名は既に使用されています。';
+    }
+
     if (!preg_match('/[a-zA-Z0-9]{1,30}/', $name)) {
         $errors['name'] = '※ユーザー名は半角英数字30文字以内で入力してください';
     }
@@ -35,41 +47,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // バリデーションクリア（エラーメッセージなし）の場合
     if (empty($errors)) {
-        // name = :name のレコード数を取得
-        $sql = 'SELECT COUNT(*) FROM users WHERE name = :name';
+        // パスワードの暗号化
+        $hash_pass = password_hash($pass, PASSWORD_DEFAULT);
+
+        // 登録処理を行う
+        $sql = 'INSERT INTO users SET name = :name, password = :pass';
         $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':name', $name);
+        $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+        $stmt->bindValue(':pass',$hash_pass, PDO::PARAM_STR);
+        $stmt->execute();
+
+        // 登録に引き続き、ログイン処理を行う
+        $sql = 'SELECT * FROM users WHERE name = :name and password = :pass';
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':name',$name, PDO::PARAM_STR);
+        $stmt->bindValue(':pass',$hash_pass, PDO::PARAM_STR);
         $stmt->execute();
         $result = $stmt->fetch();
-
-        if ($result['COUNT(*)'] == 0) {
-            // 入力されたユーザー名がテーブルに存在しない（登録済みでない）場合、
-
-            // パスワードの暗号化
-            $hash_pass = password_hash($pass, PASSWORD_DEFAULT);
-
-            // 登録処理を行う
-            $sql = 'INSERT INTO users SET name = :name, password = :pass';
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindValue(':name', $name);
-            $stmt->bindValue(':pass', $hash_pass);
-            $stmt->execute();
-
-            // 登録に引き続き、ログイン処理を行う
-            $sql = 'SELECT * FROM users WHERE name = :name and password = :pass';
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindValue(':name', $name);
-            $stmt->bindValue(':pass', $hash_pass);
-            $stmt->execute();
-            $result = $stmt->fetch();
-            $_SESSION['id'] = $result['id'];
-            $_SESSION['name'] = $result['name'];
-            header('Location: index.php');
-            exit;
-        } else {
-            // 入力されたユーザー名がテーブルに存在する（登録済み）の場合
-            $errors['name'] = '※このユーザー名は既に使用されています。';
-        }
+        $_SESSION['id'] = $result['id'];
+        $_SESSION['name'] = $result['name'];
+        header('Location: index.php');
+        exit;
     }
 }
 ?>
