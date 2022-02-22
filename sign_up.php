@@ -1,6 +1,9 @@
 <?php
 
+// DB、及びセッション接続
+require_once('db_connect.php');
 session_start();
+session_regenerate_id();
 
 // ログイン済みの場合、マイページへリダイレクト
 if (isset($_SESSION['id'])) {
@@ -8,70 +11,66 @@ if (isset($_SESSION['id'])) {
     exit;
 }
 
-// GETでアクセスしたときの初期メッセージ
-$message = '任意のユーザー名とパスワードを入力してください';
-$error_msg_name = '';
-$error_msg_pass = '';
-$error_msg_pass_check = '';
-
 // フォームから値が入力された場合、ユーザー登録判定を行う
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $name = $_POST['name'];
-    $pass = $_POST['pass'];
-    $pass_check = $_POST['pass_check'];
+    // HTMLのエスケープ処理
+    require_once('sanitize.php');
+    $post = escapeHtml($_POST);
+    $name = $post['name'];
+    $pass = $post['pass'];
+    $pass_check = $post['pass_check'];
 
-    require_once('validation.php');
-    $error_msg_name = passCheck($name);
-    $error_msg_pass = passCheck($pass);
-    $error_msg_pass_check = passCheck($pass_check);
+    // バリデーション
+    if (!preg_match('/[a-zA-Z0-9]{1,30}/', $name)) {
+        $errors['name'] = '※ユーザー名は半角英数字30文字以内で入力してください';
+    }
 
-    try {
+    if (!preg_match('/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,20}/', $pass)) {
+        $errors['pass'] = '※パスワードは半角英数字8文字以上で、英大文字、英子文字、数字を最低1個以上含む必要があります';
+    }
+
+    if ($pass !== $pass_check) {
+        $errors['pass_check'] = '※確認用パスワードが一致しません';
+    }
+
+    // バリデーションクリア（エラーメッセージなし）の場合
+    if (empty($errors)) {
         // name = :name のレコード数を取得
-        $dsn = 'mysql:host=localhost;dbname=workout;charset=utf8';
-        $pdo = new PDO($dsn, 'root', '');
         $sql = 'SELECT COUNT(*) FROM users WHERE name = :name';
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':name', $name);
         $stmt->execute();
         $result = $stmt->fetch();
 
-        // 入力されたユーザー名がテーブルに存在する（登録済み）の場合
-        if ($result['COUNT(*)'] == 1) {
-            $error_msg_name = 'このユーザー名は既に使用されています。';
-        }
+        if ($result['COUNT(*)'] == 0) {
+            // 入力されたユーザー名がテーブルに存在しない（登録済みでない）場合、
 
-        // 入力されたパスワードが確認用と一致しない場合
-        if ($pass !== $pass_check) {
-            $error_msg_pass_check = '確認用パスワードが一致しません';
-        }
+            // パスワードの暗号化
+            $hash_pass = password_hash($pass, PASSWORD_DEFAULT);
 
-        // ユーザー名・パスワードともにOKの場合
-        if ($result['COUNT(*)'] == 0 && $pass === $pass_check) {
             // 登録処理を行う
             $sql = 'INSERT INTO users SET name = :name, password = :pass';
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(':name', $name);
-            $stmt->bindValue(':pass', $pass);
+            $stmt->bindValue(':pass', $hash_pass);
             $stmt->execute();
 
             // 登録に引き続き、ログイン処理を行う
             $sql = 'SELECT * FROM users WHERE name = :name and password = :pass';
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(':name', $name);
-            $stmt->bindValue(':pass', $pass);
+            $stmt->bindValue(':pass', $hash_pass);
             $stmt->execute();
             $result = $stmt->fetch();
-
             $_SESSION['id'] = $result['id'];
             $_SESSION['name'] = $result['name'];
             header('Location: index.php');
             exit;
+        } else {
+            // 入力されたユーザー名がテーブルに存在する（登録済み）の場合
+            $errors['name'] = '※このユーザー名は既に使用されています。';
         }
-    } catch (PDOException $e) {
-        // DBアクセスに失敗した場合、エラーメッセージを表示
-        $message = $e->getMessage() . '<br/>時間をおいてから再度お試しください。';
     }
-}
 }
 ?>
 
@@ -89,26 +88,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php require_once('header.php') ?>
 
     <h2>新規登録ページ</h2>
-    <p><?= $message ?></p>
+    <p>任意のユーザー名とパスワードを入力してください</p>
     <form method="post">
         <div>
             <label>ユーザー名</label>
-            <input type="text" name="name">
-            <p><?= $error_msg_name ?></p>
+            <input type="text" name="name" required>
+            <?php if (isset($errors['name'])) : ?>
+                <p style="color: red;"><?= $errors['name'] ?></p>
+            <?php endif ?>
         </div>
         <div>
             <label>パスワード</label>
-            <input type="password" name="pass">
-            <p><?= $error_msg_pass ?></p>
+            <input type="password" name="pass" required>
+            <?php if (isset($errors['pass'])) : ?>
+                <p style="color: red;"><?= $errors['pass'] ?></p>
+            <?php endif ?>
         </div>
         <div>
             <label>パスワード（確認用）</label>
-            <input type="password" name="pass_check">
-            <p><?= $error_msg_pass_check ?></p>
+            <input type="password" name="pass_check" required>
+            <?php if (isset($errors['pass_check'])) : ?>
+                <p style="color: red;"><?= $errors['pass_check'] ?></p>
+            <?php endif ?>
         </div>
         <input type="submit" value="登録">
     </form>
-
 
 </body>
 
