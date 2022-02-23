@@ -1,60 +1,64 @@
 <?php
 
+// DB、及びセッション接続
+require_once('db_connect.php');
 session_start();
+session_regenerate_id();
 
 // ログインしていないとき、ログインページへリダイレクト
 if (!isset($_SESSION['id'])) {
-    header('Location:login.php');
+    header('Location: login.php');
     exit;
 }
 
 // GETでアクセスしたときの初期メッセージ
 $message = '現在のパスワードと新しいパスワードを入力してください';
-$error_msg_pass = '';
-$error_msg_pass_new = '';
-$error_msg_pass_check = '';
 
-// フォームから値が入力された場合、パスワードの判定を行う
+// フォームから値が入力された場合
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $pass = $_POST['pass'];
-    $pass_new = $_POST['pass_new'];
-    $pass_check = $_POST['pass_check'];
+    // HTMLのエスケープ処理
+    require_once('sanitize.php');
+    $post = escapeHtml($_POST);
+    $pass = $post['pass'];
+    $pass_new = $post['pass_new'];
+    $pass_check = $post['pass_check'];
 
-    try {
-        // 現在のパスワードが正しいかを判定
-        $dsn = 'mysql:host=localhost;dbname=workout;charset=utf8';
-        $pdo = new PDO($dsn, 'root', '');
-		$sql = 'SELECT COUNT(*) FROM users WHERE id = :id and password = :pass';
+    /* バリデーション */
+    // ログインユーザーのパスワードを取得
+    $sql = 'SELECT password FROM users WHERE id = :id';
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':id', $_SESSION['id'], PDO::PARAM_INT);
+    $stmt->execute();
+    $result = $stmt->fetch();
+
+    // パスワードが一致するかチェック
+    if (!password_verify($pass, $result['password'])) {
+        $errors['pass'] = '※パスワードが違います';
+    }
+
+    // 新パスワードが形式通りかチェック
+    if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$/', $pass_new)) {
+        $errors['pass_new'] = '※パスワードは半角英数字8文字以上で、英大文字、英子文字、数字を最低1個以上含む必要があります';
+    }
+
+    // 確認用パスワードが一致するかチェック
+    if ($pass_new !== $pass_check) {
+        $errors['pass_check'] = '※確認用パスワードが一致しません';
+    }
+
+    // バリデーションクリア（エラーメッセージなし）の場合
+    if (empty($errors)) {
+        // パスワードの暗号化
+        $hash_pass = password_hash($pass_new, PASSWORD_DEFAULT);
+
+        // パスワードの更新処理を行う
+        $sql = 'UPDATE users SET password = :pass WHERE id = :id';
         $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':id', $_SESSION['id']);
-        $stmt->bindValue(':pass', $pass);
+        $stmt->bindValue(':id', $_SESSION['id'], PDO::PARAM_INT);
+        $stmt->bindValue(':pass', $hash_pass, PDO::PARAM_STR);
         $stmt->execute();
-        $result = $stmt->fetch();
 
-        // 入力されたパスワードが一致しない場合
-        if ($result['COUNT(*)'] == 0) {
-            $error_msg_pass = 'パスワードが違います。';
-        }
-
-        // 入力されたパスワードが確認用と一致しない場合
-        if ($pass_new !== $pass_check) {
-            $error_msg_pass_check = '確認用パスワードが一致しません';
-        }
-
-        // パスワードの判定がすべてOKの場合
-        if ($result['COUNT(*)'] == 1 && $pass_new === $pass_check) {
-            // パスワードの更新を行う
-            $sql = 'UPDATE users SET password = :pass WHERE id = :id';
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindValue(':id', $_SESSION['id']);
-            $stmt->bindValue(':pass', $pass_new);
-            $stmt->execute();
-
-            $message = 'パスワードが変更されました';
-        }
-    } catch (PDOException $e) {
-        // DBアクセスに失敗した場合、エラーメッセージを表示
-        $message = $e->getMessage() . '<br/>時間をおいてから再度お試しください。';
+        $message = 'パスワードが変更されました';
     }
 }
 ?>
@@ -77,22 +81,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <form method="post">
         <div>
             <label>現在のパスワード</label>
-            <input type="password" name="pass">
-            <p><?= $error_msg_pass ?></p>
+            <input type="password" name="pass" required>
+            <p style="color: red;"><?= isset($errors['pass']) ? $errors['pass'] : '' ?></p>
         </div>
         <div>
             <label>新しいパスワード</label>
-            <input type="password" name="pass_new">
-            <p><?= $error_msg_pass_new ?></p>
+            <input type="password" name="pass_new" required>
+            <p style="color: red;"><?= isset($errors['pass_new']) ? $errors['pass_new'] : '' ?></p>
         </div>
         <div>
             <label>新しいパスワード（確認用）</label>
-            <input type="password" name="pass_check">
-            <p><?= $error_msg_pass_check ?></p>
+            <input type="password" name="pass_check" required>
+            <p style="color: red;"><?= isset($errors['pass_check']) ? $errors['pass_check'] : '' ?></p>
         </div>
         <input type="submit" value="変更">
     </form>
-
 
 </body>
 

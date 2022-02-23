@@ -1,42 +1,49 @@
 <?php
 
+// DB、及びセッション接続
+require_once('db_connect.php');
 session_start();
+session_regenerate_id();
 
 // ログインしていないとき、ログインページへリダイレクト
 if (!isset($_SESSION['id'])) {
-    header('Location:login.php');
+    header('Location: login.php');
     exit;
 }
 
-// GETでアクセスしたときの初期メッセージ
-$message = 'ユーザー登録を削除するには、パスワードを入力して「確認」ボタンを押してください';
-
 // フォームから値が入力された場合、パスワードの判定を行う
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $pass = $_POST['pass'];
+    // HTMLのエスケープ処理
+    require_once('sanitize.php');
+    $post = escapeHtml($_POST);
+    $pass = $post['pass'];
 
-    try {
-        // 入力されたパスワードが正しいかを判定
-        $dsn = 'mysql:host=localhost;dbname=workout;charset=utf8';
-        $pdo = new PDO($dsn, 'root', '');
-        $sql = 'SELECT COUNT(*) FROM users WHERE id = :id and password = :pass';
+    // ログインユーザーのパスワードを取得
+    $sql = 'SELECT password FROM users WHERE id = :id';
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':id', $_SESSION['id'], PDO::PARAM_INT);
+    $stmt->execute();
+    $result = $stmt->fetch();
+
+    // パスワードが一致するかチェック
+    if (password_verify($pass, $result['password'])) {
+        $id = $_SESSION['id'];
+        $sql = 'DELETE FROM users WHERE id = :id';
         $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':id', $_SESSION['id']);
-        $stmt->bindValue(':pass', $pass);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
-        $result = $stmt->fetch();
 
-        if ($result['COUNT(*)'] == 0) {
-             // 入力されたパスワードが一致しない場合
-            $message = 'パスワードが違います';
-        } else {
-             // 入力されたパスワードが一致する場合、確認画面へリダイレクト
-            header('Location: delete_user_confirm.php');
-            exit;
-        }
-    } catch (PDOException $e) {
-        // DBアクセスに失敗した場合、エラーメッセージを表示
-        $message = $e->getMessage() . '<br/>時間をおいてから再度お試しください。';
+        // セッションを破棄する
+        $_SESSION = array();
+        session_destroy();
+
+        // 画面遷移フラグを設定して、削除完了ページへリダイレクト
+        $_SESSION['flag'] = true;
+        header('Location: delete_user_complete.php');
+        exit;
+    } else {
+        // 入力されたパスワードが一致しない場合
+        $error = '※パスワードが違います';
     }
 }
 ?>
@@ -55,12 +62,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php require_once('header.php') ?>
 
     <h2>ユーザー登録削除ページ</h2>
-    <p><?= $message ?></p>
+    <p style="color :red">※一度ユーザー登録を削除すると、すべての筋トレログが削除され元に戻せません。</p>
+    <p>ユーザー登録を削除するには、パスワードを入力して「確認」ボタンを押してください</p>
     <form method="post">
         <div>
             <label>パスワード</label>
-            <input type="password" name="pass">
+            <input type="password" name="pass" required>
+            <p style="color: red;"><?= isset($error) ? $error : '' ?></p>
         </div>
+        <input type="button" value="戻る" onclick="history.back(-1)">
         <input type="submit" value="確認">
     </form>
 

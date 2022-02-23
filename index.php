@@ -7,7 +7,7 @@ if (isset($_SESSION['name'])) {
     $message = $_SESSION['name'] . ' の筋トレログ一覧';
 } else {
     // ログアウト状態のとき、ログインページへリダイレクトする
-    header('Location:login.php');
+    header('Location: login.php');
     exit;
 }
 

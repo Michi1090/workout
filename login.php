@@ -7,7 +7,7 @@ session_regenerate_id();
 
 // ログイン状態のとき、インデックスページへリダイレクトする
 if (isset($_SESSION['id'])) {
-	header('Location:index.php');
+	header('Location: index.php');
 	exit;
 }
 
@@ -53,9 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 	<h2>ログイン</h2>
 	<p>ユーザー名とパスワードを入力してください</p>
-	<?php if(isset($error)): ?>
-		<p style="color: red;"><?= $error ?></p>
-	<?php endif ?>
+	<p style="color: red;"><?= isset($error) ? $error : '' ?></p>
 	<form method="post">
 		<div>
 			<label>ユーザー名</label>

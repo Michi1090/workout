@@ -1,6 +1,6 @@
 <?php
 
-if (isset($_SESSION['name'])) {
+if (isset($_SESSION['id'])) {
     $name = $_SESSION['name'];
 } else {
     $name = '';

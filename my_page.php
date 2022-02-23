@@ -1,13 +1,15 @@
 <?php
 
+// セッション接続
 session_start();
+session_regenerate_id();
 
-if (isset($_SESSION['name'])) {
+if (isset($_SESSION['id'])) {
     // ログイン状態のとき、メッセージを表示
     $message = 'ようこそ、' . $_SESSION['name'] . 'さん！</br>こちらのページからパスワードの変更とユーザー登録の削除を行えます。';
 } else {
     // ログアウト状態のとき、ログインページへリダイレクトする
-    header('Location:login.php');
+    header('Location: login.php');
     exit;
 }
 ?>
