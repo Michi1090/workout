@@ -1,7 +1,9 @@
 <?php
 
-// DB、及びセッション接続
 require_once('db_connect.php');
+require_once('sanitize.php');
+
+// セッションの開始
 session_start();
 session_regenerate_id();
 
@@ -16,14 +18,11 @@ $message = '現在のパスワードと新しいパスワードを入力して�
 
 // フォームから値が入力された場合
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // HTMLのエスケープ処理
-    require_once('sanitize.php');
-    $post = escapeHtml($_POST);
-    $pass = $post['pass'];
-    $pass_new = $post['pass_new'];
-    $pass_check = $post['pass_check'];
+    // フォームの入力値を代入
+    $pass = $_POST['pass'];
+    $pass_new = $_POST['pass_new'];
+    $pass_check = $_POST['pass_check'];
 
-    /* バリデーション */
     // ログインユーザーのパスワードを取得
     $sql = 'SELECT password FROM users WHERE id = :id';
     $stmt = $pdo->prepare($sql);
@@ -31,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->execute();
     $result = $stmt->fetch();
 
+    /* バリデーション */
     // パスワードが一致するかチェック
     if (!password_verify($pass, $result['password'])) {
         $errors['pass'] = '※パスワードが違います';
@@ -77,22 +77,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php require_once('header.php') ?>
 
     <h2>パスワード変更ページ</h2>
-    <p><?= $message ?></p>
+    <p><?= escape($message) ?></p>
     <form method="post">
         <div>
             <label>現在のパスワード</label>
             <input type="password" name="pass" required>
-            <p style="color: red;"><?= isset($errors['pass']) ? $errors['pass'] : '' ?></p>
+            <p style="color: red;"><?= isset($errors['pass']) ? escape($errors['pass']) : '' ?></p>
         </div>
         <div>
             <label>新しいパスワード</label>
             <input type="password" name="pass_new" required>
-            <p style="color: red;"><?= isset($errors['pass_new']) ? $errors['pass_new'] : '' ?></p>
+            <p style="color: red;"><?= isset($errors['pass_new']) ? escape($errors['pass_new']) : '' ?></p>
         </div>
         <div>
             <label>新しいパスワード（確認用）</label>
             <input type="password" name="pass_check" required>
-            <p style="color: red;"><?= isset($errors['pass_check']) ? $errors['pass_check'] : '' ?></p>
+            <p style="color: red;"><?= isset($errors['pass_check']) ? escape($errors['pass_check']) : '' ?></p>
         </div>
         <input type="submit" value="変更">
     </form>

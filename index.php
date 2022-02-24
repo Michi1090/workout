@@ -1,8 +1,13 @@
 <?php
 
-session_start();
+require_once('db_connect.php');
+require_once('sanitize.php');
 
-if (isset($_SESSION['name'])) {
+// セッションの開始
+session_start();
+session_regenerate_id();
+
+if (isset($_SESSION['id'])) {
     // ログイン状態のとき
     $message = $_SESSION['name'] . ' の筋トレログ一覧';
 } else {
@@ -27,7 +32,7 @@ if (isset($_SESSION['name'])) {
     <?php require_once('header.php') ?>
 
     <h2>インデックスページ</h2>
-    <p><?= $message ?></p>
+    <p><?= escape($message); ?></p>
 
 </body>
 

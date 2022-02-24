@@ -4,10 +4,12 @@
 session_start();
 session_regenerate_id();
 
-// 削除ページ以外からアクセスしたとき、インデックスページへリダイレクト
-if ($_SESSION['flag'] !== true) {
+if ($_SESSION['flag']) {
+    // フラグtrue（削除ページからアクセスした）の場合、フラグ削除
     $_SESSION = array();
     session_destroy();
+} else {
+    // フラグがない（削除ページ以外からアクセスした）場合、インデックスページへリダイレクト
     header('Location: index.php');
     exit;
 }

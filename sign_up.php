@@ -1,7 +1,9 @@
 <?php
 
-// DB、及びセッション接続
 require_once('db_connect.php');
+require_once('sanitize.php');
+
+// セッションの開始
 session_start();
 session_regenerate_id();
 
@@ -13,14 +15,11 @@ if (isset($_SESSION['id'])) {
 
 // フォームから値が入力された場合
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // HTMLのエスケープ処理
-    require_once('sanitize.php');
-    $post = escapeHtml($_POST);
-    $name = $post['name'];
-    $pass = $post['pass'];
-    $pass_check = $post['pass_check'];
+    // フォームの入力値を代入
+    $name = $_POST['name'];
+    $pass = $_POST['pass'];
+    $pass_check = $_POST['pass_check'];
 
-    /* バリデーション */
     // 入力されたユーザー名に一致するレコード数を取得
     $sql = 'SELECT COUNT(*) FROM users WHERE name = :name';
     $stmt = $pdo->prepare($sql);
@@ -28,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->execute();
     $result = $stmt->fetch();
 
+    /* バリデーション */
     // 入力されたユーザー名がテーブルに存在するかチェック
     if ($result['COUNT(*)'] == 1) {
         $errors['name'] = '※このユーザー名は既に使用されています。';
@@ -94,17 +94,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div>
             <label>ユーザー名</label>
             <input type="text" name="name" required>
-            <p style="color: red;"><?= isset($errors['name']) ? $errors['name'] : '' ?></p>
+            <p style="color: red;"><?= isset($errors['name']) ? escape($errors['name']) : '' ?></p>
         </div>
         <div>
             <label>パスワード</label>
             <input type="password" name="pass" required>
-            <p style="color: red;"><?= isset($errors['pass']) ? $errors['pass'] : '' ?></p>
+            <p style="color: red;"><?= isset($errors['pass']) ? escape($errors['pass']) : '' ?></p>
         </div>
         <div>
             <label>パスワード（確認用）</label>
             <input type="password" name="pass_check" required>
-            <p style="color: red;"><?= isset($errors['pass_check']) ? $errors['pass_check'] : '' ?></p>
+            <p style="color: red;"><?= isset($errors['pass_check']) ? escape($errors['pass_check']) : '' ?></p>
         </div>
         <input type="submit" value="登録">
     </form>

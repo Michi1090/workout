@@ -1,7 +1,9 @@
 <?php
 
-// DB、及びセッション接続
 require_once('db_connect.php');
+require_once('sanitize.php');
+
+// セッションの開始
 session_start();
 session_regenerate_id();
 
@@ -13,10 +15,8 @@ if (!isset($_SESSION['id'])) {
 
 // フォームから値が入力された場合、パスワードの判定を行う
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // HTMLのエスケープ処理
-    require_once('sanitize.php');
-    $post = escapeHtml($_POST);
-    $pass = $post['pass'];
+    // フォームの入力値を代入
+    $pass = $_POST['pass'];
 
     // ログインユーザーのパスワードを取得
     $sql = 'SELECT password FROM users WHERE id = :id';
@@ -33,11 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
 
-        // セッションを破棄する
-        $_SESSION = array();
-        session_destroy();
-
-        // 画面遷移フラグを設定して、削除完了ページへリダイレクト
+        // 画面遷移フラグを設定して、完了画面へリダイレクト
         $_SESSION['flag'] = true;
         header('Location: delete_user_complete.php');
         exit;
@@ -68,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div>
             <label>パスワード</label>
             <input type="password" name="pass" required>
-            <p style="color: red;"><?= isset($error) ? $error : '' ?></p>
+            <p style="color: red;"><?= isset($error) ? escape($error) : '' ?></p>
         </div>
         <input type="button" value="戻る" onclick="history.back(-1)">
         <input type="submit" value="確認">
