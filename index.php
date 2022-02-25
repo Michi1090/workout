@@ -1,3 +1,5 @@
+<!--  ロジック
+================================================================================================  -->
 <?php
 
 require_once('db_connect.php');
@@ -18,22 +20,20 @@ if (isset($_SESSION['id'])) {
 
 ?>
 
-<!DOCTYPE html>
-<html lang="ja">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Workout</title>
-</head>
+<!--  ビュー
+================================================================================================  -->
+<!-- head 読み込み -->
+<?php require_once('head.php') ?>
 
 <body>
-    <!-- ヘッダー -->
+    <!-- header 読み込み -->
     <?php require_once('header.php') ?>
 
     <h2>インデックスページ</h2>
     <p><?= escape($message); ?></p>
 
+    <script src="js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

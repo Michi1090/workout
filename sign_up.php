@@ -1,3 +1,5 @@
+<!--  ロジック
+================================================================================================  -->
 <?php
 
 require_once('db_connect.php');
@@ -69,23 +71,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = $stmt->fetch();
         $_SESSION['id'] = $result['id'];
         $_SESSION['name'] = $result['name'];
+
+        // トークンの生成（CSRF対策）
+        $_SESSION['token'] = bin2hex(random_bytes(32));
+
+        // インデックスページへリダイレクト
         header('Location: index.php');
         exit;
     }
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="ja">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Workout</title>
-</head>
+<!--  ビュー
+================================================================================================  -->
+<!-- head 読み込み -->
+<?php require_once('head.php') ?>
 
 <body>
-    <!-- ヘッダー -->
+    <!-- header 読み込み -->
     <?php require_once('header.php') ?>
 
     <h2>新規登録ページ</h2>
@@ -109,6 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="submit" value="登録">
     </form>
 
+    <script src="js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

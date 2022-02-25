@@ -1,3 +1,5 @@
+<!--  ロジック
+================================================================================================  -->
 <?php
 
 require_once('db_connect.php');
@@ -25,8 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->execute();
     $result = $stmt->fetch();
 
-    // パスワードが一致するかチェック
     if (password_verify($pass, $result['password'])) {
+        // パスワードが一致する場合、ユーザー登録を削除
         $id = $_SESSION['id'];
         $sql = 'DELETE FROM users WHERE id = :id';
         $stmt = $pdo->prepare($sql);
@@ -44,17 +46,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="ja">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Workout</title>
-</head>
+<!--  ビュー
+================================================================================================  -->
+<!-- head 読み込み -->
+<?php require_once('head.php') ?>
 
 <body>
-    <!-- ヘッダー -->
+    <!-- header 読み込み -->
     <?php require_once('header.php') ?>
 
     <h2>ユーザー登録削除ページ</h2>
@@ -70,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="submit" value="確認">
     </form>
 
-
+    <script src="js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
