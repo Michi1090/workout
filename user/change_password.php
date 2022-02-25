@@ -2,8 +2,8 @@
 ================================================================================================  -->
 <?php
 
-require_once('db_connect.php');
-require_once('sanitize.php');
+require_once('../db_connect.php');
+require_once('../sanitize.php');
 
 // セッションの開始
 session_start();
@@ -62,17 +62,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $message = 'パスワードが変更されました';
     }
 }
+
+// ヘッダーのパス指定
+$path_log = '../log/';
+$path_user = './';
 ?>
 
 
 <!--  ビュー
 ================================================================================================  -->
 <!-- head 読み込み -->
-<?php require_once('head.php') ?>
+<?php require_once('../head.php') ?>
 
 <body>
     <!-- header 読み込み -->
-    <?php require_once('header.php') ?>
+    <?php require_once('../header.php') ?>
 
     <h2>パスワード変更ページ</h2>
     <p><?= escape($message) ?></p>
@@ -95,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="submit" value="変更">
     </form>
 
-    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

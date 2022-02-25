@@ -2,15 +2,15 @@
 ================================================================================================  -->
 <?php
 
-require_once('db_connect.php');
-require_once('sanitize.php');
+require_once('../db_connect.php');
+require_once('../sanitize.php');
 
 // セッションの開始
 session_start();
 
 // ログイン済みの場合、マイページへリダイレクト
 if (isset($_SESSION['id'])) {
-    header('Location: index.php');
+    header('Location: ../log/index.php');
     exit;
 }
 
@@ -78,21 +78,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['token'] = bin2hex(random_bytes(32));
 
         // インデックスページへリダイレクト
-        header('Location: index.php');
+        header('Location: ../log/index.php');
         exit;
     }
 }
+
+// ヘッダーのパス指定
+$path_log = '../log/';
+$path_user = './';
 ?>
 
 
 <!--  ビュー
 ================================================================================================  -->
 <!-- head 読み込み -->
-<?php require_once('head.php') ?>
+<?php require_once('../head.php') ?>
 
 <body>
     <!-- header 読み込み -->
-    <?php require_once('header.php') ?>
+    <?php require_once('../header.php') ?>
 
     <h2>新規登録ページ</h2>
     <p>任意のユーザー名とパスワードを入力してください</p>
@@ -115,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="submit" value="登録">
     </form>
 
-    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

@@ -2,8 +2,8 @@
 ================================================================================================  -->
 <?php
 
-require_once('db_connect.php');
-require_once('sanitize.php');
+require_once('../db_connect.php');
+require_once('../sanitize.php');
 
 // セッションの開始
 session_start();
@@ -43,17 +43,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error = '※パスワードが違います';
     }
 }
+
+// ヘッダーのパス指定
+$path_log = '../log/';
+$path_user = './';
 ?>
 
 
 <!--  ビュー
 ================================================================================================  -->
 <!-- head 読み込み -->
-<?php require_once('head.php') ?>
+<?php require_once('../head.php') ?>
 
 <body>
     <!-- header 読み込み -->
-    <?php require_once('header.php') ?>
+    <?php require_once('../header.php') ?>
 
     <h2>ユーザー登録削除ページ</h2>
     <p style="color :red">※一度ユーザー登録を削除すると、すべての筋トレログが削除され元に戻せません。</p>
@@ -68,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="submit" value="確認">
     </form>
 
-    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

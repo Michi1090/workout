@@ -2,15 +2,15 @@
 ================================================================================================  -->
 <?php
 
-require_once('db_connect.php');
-require_once('sanitize.php');
+require_once('../db_connect.php');
+require_once('../sanitize.php');
 
 // セッションの開始
 session_start();
 
 // ログイン状態のとき、インデックスページへリダイレクトする
 if (isset($_SESSION['id'])) {
-	header('Location: index.php');
+	header('Location: ../log/index.php');
 	exit;
 }
 
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$_SESSION['token'] = bin2hex(random_bytes(32));
 
 			// インデックスページへリダイレクト
-			header('Location: index.php');
+			header('Location: ../log/index.php');
 			exit;
 		} else {
 			// パスワードが一致しない場合
@@ -52,17 +52,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$error = '※ユーザー名、またはパスワードが違います。ユーザー登録をされていない方は先にユーザー登録をしてください。';
 	}
 }
+
+// ヘッダーのパス指定
+$path_log = '../log/';
+$path_user = './';
 ?>
 
 
 <!--  ビュー
 ================================================================================================  -->
 <!-- head 読み込み -->
-<?php require_once('head.php') ?>
+<?php require_once('../head.php') ?>
 
 <body>
 	<!-- header 読み込み -->
-	<?php require_once('header.php') ?>
+	<?php require_once('../header.php') ?>
 
 	<h2>ログイン</h2>
 	<p>ユーザー名とパスワードを入力してください</p>
@@ -79,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		<input type="submit" value="ログイン">
 	</form>
 
-	<script src="js/bootstrap.bundle.min.js"></script>
+	<script src="../js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

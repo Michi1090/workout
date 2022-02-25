@@ -2,7 +2,7 @@
 ================================================================================================  -->
 <?php
 
-require_once('sanitize.php');
+require_once('../sanitize.php');
 
 // セッションの開始
 session_start();
@@ -15,17 +15,21 @@ if (isset($_SESSION['id'])) {
     header('Location: login.php');
     exit;
 }
+
+// ヘッダーのパス指定
+$path_log = '../log/';
+$path_user = './';
 ?>
 
 
 <!--  ビュー
 ================================================================================================  -->
 <!-- head 読み込み -->
-<?php require_once('head.php') ?>
+<?php require_once('../head.php') ?>
 
 <body>
     <!-- header 読み込み -->
-    <?php require_once('header.php') ?>
+    <?php require_once('../header.php') ?>
 
     <h2>マイページ</h2>
     <p><?= escape($message) ?></p>
@@ -35,7 +39,7 @@ if (isset($_SESSION['id'])) {
         <a href="delete_user.php">ユーザー登録削除</a>
     </div>
 
-    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
