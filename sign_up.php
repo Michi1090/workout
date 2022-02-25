@@ -7,7 +7,6 @@ require_once('sanitize.php');
 
 // セッションの開始
 session_start();
-session_regenerate_id();
 
 // ログイン済みの場合、マイページへリダイレクト
 if (isset($_SESSION['id'])) {
@@ -71,6 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = $stmt->fetch();
         $_SESSION['id'] = $result['id'];
         $_SESSION['name'] = $result['name'];
+
+        // セッションIDを新しく生成（セッションハイジャック対策）
+        session_regenerate_id();
 
         // トークンの生成（CSRF対策）
         $_SESSION['token'] = bin2hex(random_bytes(32));

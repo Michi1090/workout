@@ -7,7 +7,6 @@ require_once('sanitize.php');
 
 // セッションの開始
 session_start();
-session_regenerate_id();
 
 // ログインしていないとき、ログインページへリダイレクト
 if (!isset($_SESSION['id'])) {

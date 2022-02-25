@@ -4,7 +4,6 @@
 
 // セッション接続
 session_start();
-session_regenerate_id();
 
 if ($_SESSION['flag']) {
     // フラグtrue（削除ページからアクセスした）の場合、フラグ削除

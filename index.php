@@ -7,7 +7,6 @@ require_once('sanitize.php');
 
 // セッションの開始
 session_start();
-session_regenerate_id();
 
 if (isset($_SESSION['id'])) {
     // ログイン状態のとき
