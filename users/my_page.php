@@ -17,8 +17,8 @@ if (isset($_SESSION['id'])) {
 }
 
 // ヘッダーのパス指定
-$path_log = '../log/';
-$path_user = './';
+$path_logs = '../logs/';
+$path_users = './';
 ?>
 
 
@@ -36,7 +36,7 @@ $path_user = './';
     <p>こちらのページからパスワードの変更とユーザー登録の削除を行えます。</p>
     <div>
         <a href="change_password.php">パスワード変更</a>
-        <a href="delete_user.php">ユーザー登録削除</a>
+        <a href="delete.php">ユーザー登録削除</a>
     </div>
 
     <script src="../js/bootstrap.bundle.min.js"></script>

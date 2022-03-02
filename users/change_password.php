@@ -64,8 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // ヘッダーのパス指定
-$path_log = '../log/';
-$path_user = './';
+$path_logs = '../logs/';
+$path_users = './';
 ?>
 
 

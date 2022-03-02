@@ -10,7 +10,7 @@ session_start();
 
 // ログイン済みの場合、マイページへリダイレクト
 if (isset($_SESSION['id'])) {
-    header('Location: ../log/index.php');
+    header('Location: ../logs/index.php');
     exit;
 }
 
@@ -78,14 +78,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['token'] = bin2hex(random_bytes(32));
 
         // インデックスページへリダイレクト
-        header('Location: ../log/index.php');
+        header('Location: ../logs/index.php');
         exit;
     }
 }
 
 // ヘッダーのパス指定
-$path_log = '../log/';
-$path_user = './';
+$path_logs = '../logs/';
+$path_users = './';
 ?>
 
 

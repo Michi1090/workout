@@ -13,7 +13,7 @@ if (isset($_SESSION['id'])) {
     $message = $_SESSION['name'] . ' の筋トレログ一覧';
 } else {
     // ログアウト状態のとき、ログインページへリダイレクトする
-    header('Location: ../user/login.php');
+    header('Location: ../users/login.php');
     exit;
 }
 
@@ -47,8 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // ヘッダーのパス指定
-$path_log = './';
-$path_user = '../user/';
+$path_logs = './';
+$path_users = '../users/';
 ?>
 
 
@@ -72,7 +72,7 @@ $path_user = '../user/';
         <div>
             <label for="part">部位</label>
             <select name="part" id="part">
-                <option value="1 = 1">--</option>
+                <option value="">--</option>
                 <?php foreach ($machines as $machine) : ?>
                     <option value="<?= $machine['part'] ?>"><?= $machine['part'] ?></option>
                 <?php endforeach ?>
@@ -81,7 +81,7 @@ $path_user = '../user/';
         <div>
             <label for="machine_name">マシン</label>
             <select name="machine_name" id="machine_name">
-                <option value="1 = 1">--</option>
+                <option value="">--</option>
                 <?php foreach ($machines as $machine) : ?>
                     <option value="<?= $machine['name'] ?>"><?= $machine['name'] ?></option>
                 <?php endforeach ?>

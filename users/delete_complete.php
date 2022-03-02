@@ -11,13 +11,13 @@ if ($_SESSION['flag']) {
     session_destroy();
 } else {
     // フラグがない（削除ページ以外からアクセスした）場合、インデックスページへリダイレクト
-    header('Location: ../log/index.php');
+    header('Location: ../logs/index.php');
     exit;
 }
 
 // ヘッダーのパス指定
-$path_log = '../log/';
-$path_user = './';
+$path_logs = '../logs/';
+$path_users = './';
 ?>
 
 

@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // 画面遷移フラグを設定して、完了画面へリダイレクト
         $_SESSION['flag'] = true;
-        header('Location: delete_user_complete.php');
+        header('Location: delete_complete.php');
         exit;
     } else {
         // 入力されたパスワードが一致しない場合
@@ -45,8 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // ヘッダーのパス指定
-$path_log = '../log/';
-$path_user = './';
+$path_logs = '../logs/';
+$path_users = './';
 ?>
 
 
