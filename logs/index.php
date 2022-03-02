@@ -35,14 +35,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $part = $_POST['part'];
     $machine_name = $_POST['machine_name'];
 
+    // 条件（where句）の生成
+    $where = "";
+
+    if (!empty($created_at)) {
+        $where .= ' AND created_at = :created_at';
+    }
+
+    if (!empty($part)) {
+        $where .= ' AND part = :part';
+    }
+
+    if (!empty($machine_name)) {
+        $where .= ' AND machines.name = :machine_name';
+    }
+
     // 条件に合致するレコードを取得
-    $sql = 'SELECT created_at, part, machines.name, weight, time, work_load, note FROM weight_logs JOIN users JOIN machines ON user_id = users.id AND machine_id = machines.id WHERE user_id = :user_id AND created_at = :created_at AND part = :part AND machines.name = :machine_name';
+    $sql = 'SELECT created_at, part, machines.name, weight, time, work_load, note FROM weight_logs JOIN users JOIN machines ON user_id = users.id AND machine_id = machines.id WHERE user_id = :user_id' . $where . ' ORDER BY created_at DESC';
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':user_id', $_SESSION['id'], PDO::PARAM_INT);
-    $stmt->bindValue(':created_at', $created_at, PDO::PARAM_STR);
-    $stmt->bindValue(':part', $part, PDO::PARAM_STR);
-    $stmt->bindValue(':machine_name', $machine_name, PDO::PARAM_STR);
+
+    if (!empty($created_at)) {
+        $stmt->bindValue(':created_at', $created_at, PDO::PARAM_STR);
+    }
+
+    if (!empty($part)) {
+        $stmt->bindValue(':part', $part, PDO::PARAM_STR);
+    }
+
+    if (!empty($machine_name)) {
+        $stmt->bindValue(':machine_name', $machine_name, PDO::PARAM_STR);
+    }
+
     $stmt->execute();
 }
 
@@ -67,7 +92,7 @@ $path_users = '../users/';
     <form method="post">
         <div>
             <label for="created_at">日付</label>
-            <input type="date" name="created_at" max="9999-12-31" id="created_at">
+            <input type="date" name="created_at" max="9999-12-31" id="created_at" value="">
         </div>
         <div>
             <label for="part">部位</label>
