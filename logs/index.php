@@ -92,14 +92,15 @@ $path_users = '../users/';
     <form method="post">
         <div>
             <label for="date">日付</label>
-            <input type="date" name="date" max="9999-12-31" id="date" value="">
+            <input type="date" name="date" max="9999-12-31" id="date" value="<?= $date ?>">
         </div>
         <div>
             <label for="part">部位</label>
             <select name="part" id="part">
                 <option value="">--</option>
                 <?php foreach ($machines as $machine) : ?>
-                    <option value="<?= $machine['part'] ?>"><?= $machine['part'] ?></option>
+                    <?php $checked = $machine['part'] === $part ? 'selected' : '' ?>
+                    <option value="<?= $machine['part'] ?>" <?= $checked ?>><?= $machine['part'] ?></option>
                 <?php endforeach ?>
             </select>
         </div>
