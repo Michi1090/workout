@@ -17,14 +17,16 @@ if (isset($_SESSION['id'])) {
     exit;
 }
 
-// セレクトボックスの値を取得
-$sql = 'SELECT part, name FROM machines';
-$stmt = $pdo->query($sql);
-$machines = $stmt->fetchAll();
+// 入力フォームの初期値
+$date = $part = $machine ='';
+
+// セレクトボックスの値
+$form_parts = ['肩', '腕', '胸', '腹', '背中', '脚', '有酸素運動', 'その他'];
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') { // GETでアクセスした場合
     // ユーザーの全筋トレログを取得
-    $sql = 'SELECT date, part, machines.name, weight, time, set_count, work_load, note FROM weight_logs JOIN users JOIN machines ON user_id = users.id AND machine_id = machines.id WHERE user_id = :user_id ORDER BY date DESC';
+    $sql = 'SELECT date, part, machine, weight, time, set_count, work_load, note FROM weight_logs JOIN users ON user_id = users.id WHERE user_id = :user_id ORDER BY date DESC';
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':user_id', $_SESSION['id'], PDO::PARAM_INT);
     $stmt->execute();
@@ -33,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { // GETでアクセスした場合
     // フォームの入力値を代入
     $date = $_POST['date'];
     $part = $_POST['part'];
-    $machine_name = $_POST['machine_name'];
+    $machine = $_POST['machine'];
 
     // 条件（where句）の生成
     $where = "";
@@ -45,13 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { // GETでアクセスした場合
         $where .= ' AND part = :part';
     }
 
-    if (!empty($machine_name)) {
-        $where .= ' AND machines.name = :machine_name';
+    if (!empty($machine)) {
+        $where .= ' AND machine = :machine';
     }
 
     // 条件に合致するレコードを取得
-    $sql = 'SELECT date, part, machines.name, weight, time, set_count, work_load, note FROM weight_logs JOIN users JOIN machines ON user_id = users.id AND machine_id = machines.id WHERE user_id = :user_id' . $where . ' ORDER BY date DESC';
-
+    $sql = 'SELECT date, part, machine, weight, time, set_count, work_load, note FROM weight_logs JOIN users ON user_id = users.id WHERE user_id = :user_id' . $where . ' ORDER BY date DESC';
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':user_id', $_SESSION['id'], PDO::PARAM_INT);
 
@@ -63,8 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { // GETでアクセスした場合
         $stmt->bindValue(':part', $part, PDO::PARAM_STR);
     }
 
-    if (!empty($machine_name)) {
-        $stmt->bindValue(':machine_name', $machine_name, PDO::PARAM_STR);
+    if (!empty($machine)) {
+        $stmt->bindValue(':machine', $machine, PDO::PARAM_STR);
     }
 
     $stmt->execute();
@@ -98,22 +99,17 @@ $path_users = '../users/';
             <label for="part">部位</label>
             <select name="part" id="part">
                 <option value="">--</option>
-                <?php foreach ($machines as $machine) : ?>
-                    <?php $checked = $machine['part'] === $part ? 'selected' : '' ?>
-                    <option value="<?= $machine['part'] ?>" <?= $checked ?>><?= $machine['part'] ?></option>
+                <?php foreach ($form_parts as $form_part) : ?>
+                    <?php $checked = $form_part === $part ? 'selected' : '' ?>
+                    <option value="<?= $form_part ?>" <?= $checked ?>><?= $form_part ?></option>
                 <?php endforeach ?>
             </select>
         </div>
         <div>
-            <label for="machine_name">マシン</label>
-            <select name="machine_name" id="machine_name">
-                <option value="">--</option>
-                <?php foreach ($machines as $machine) : ?>
-                    <option value="<?= $machine['name'] ?>"><?= $machine['name'] ?></option>
-                <?php endforeach ?>
-            </select>
+            <label for="machine">マシン</label>
+            <input type="text" name="machine" value="<?= $machine ?>">
         </div>
-        <input type="submit" value="送信">
+        <input type="submit" value="検索">
     </form>
 
 
@@ -127,7 +123,6 @@ $path_users = '../users/';
                     <th>重量</th>
                     <th>回数</th>
                     <th>セット</th>
-                    <th>トータル</th>
                     <th>負荷</th>
                     <th>メモ</th>
                 </tr>
@@ -135,11 +130,10 @@ $path_users = '../users/';
                     <tr>
                         <td><?= $log['date'] ?></td>
                         <td><?= $log['part'] ?></td>
-                        <td><?= $log['name'] ?></td>
+                        <td><?= $log['machine'] ?></td>
                         <td><?= $log['weight'] . ' kg' ?></td>
                         <td><?= $log['time'] . ' 回' ?></td>
-                        <td><?= $log['set_count'] . ' セット' ?></td>
-                        <td><?= $log['time'] * $log['set_count'] . ' 回' ?></td>
+                        <td><?= $log['set_count'] . ' SET' ?></td>
                         <td><?= $log['work_load'] ?></td>
                         <td> <?= $log['note'] ?></td>
                     </tr>
