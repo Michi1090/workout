@@ -17,14 +17,13 @@ if (isset($_SESSION['id'])) {
     exit;
 }
 
-// 入力フォームの初期値
-$date = $part = $machine ='';
-
 // セレクトボックスの値
 $form_parts = ['肩', '腕', '胸', '腹', '背中', '脚', '有酸素運動', 'その他'];
 
-
 if ($_SERVER['REQUEST_METHOD'] == 'GET') { // GETでアクセスした場合
+    // 入力フォームの初期値
+    $date = $part = $machine = '';
+
     // ユーザーの全筋トレログを取得
     $sql = 'SELECT date, part, machine, weight, time, set_count, work_load, note FROM weight_logs JOIN users ON user_id = users.id WHERE user_id = :user_id ORDER BY date DESC';
     $stmt = $pdo->prepare($sql);
@@ -48,14 +47,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { // GETでアクセスした場合
     }
 
     if (!empty($machine)) {
-        $where .= ' AND machine = :machine';
+        $where .= ' AND machine LIKE :machine';
     }
 
     // 条件に合致するレコードを取得
     $sql = 'SELECT date, part, machine, weight, time, set_count, work_load, note FROM weight_logs JOIN users ON user_id = users.id WHERE user_id = :user_id' . $where . ' ORDER BY date DESC';
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':user_id', $_SESSION['id'], PDO::PARAM_INT);
-
     if (!empty($date)) {
         $stmt->bindValue(':date', $date, PDO::PARAM_STR);
     }
@@ -65,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { // GETでアクセスした場合
     }
 
     if (!empty($machine)) {
-        $stmt->bindValue(':machine', $machine, PDO::PARAM_STR);
+        $stmt->bindValue(':machine', '%' . $machine . '%', PDO::PARAM_STR);
     }
 
     $stmt->execute();
@@ -110,6 +108,7 @@ $path_users = '../users/';
             <input type="text" name="machine" value="<?= $machine ?>">
         </div>
         <input type="submit" value="検索">
+        <input type="button" value="クリア" onclick="location.href='index.php'">
     </form>
 
 
