@@ -22,24 +22,23 @@ $sql = 'SELECT part, name FROM machines';
 $stmt = $pdo->query($sql);
 $machines = $stmt->fetchAll();
 
-// ユーザーの全筋トレログを取得
-$sql = 'SELECT created_at, part, machines.name, weight, time, work_load, note FROM weight_logs JOIN users JOIN machines ON user_id = users.id AND machine_id = machines.id WHERE user_id = :user_id ORDER BY created_at DESC';
-$stmt = $pdo->prepare($sql);
-$stmt->bindValue(':user_id', $_SESSION['id'], PDO::PARAM_INT);
-$stmt->execute();
-
-// フォームから値が入力された場合
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'GET') { // GETでアクセスした場合
+    // ユーザーの全筋トレログを取得
+    $sql = 'SELECT date, part, machines.name, weight, time, set_count, work_load, note FROM weight_logs JOIN users JOIN machines ON user_id = users.id AND machine_id = machines.id WHERE user_id = :user_id ORDER BY date DESC';
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':user_id', $_SESSION['id'], PDO::PARAM_INT);
+    $stmt->execute();
+    $result = $stmt->fetchAll();
+} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') { // フォームから値が入力された場合
     // フォームの入力値を代入
-    $created_at = $_POST['created_at'];
+    $date = $_POST['date'];
     $part = $_POST['part'];
     $machine_name = $_POST['machine_name'];
 
     // 条件（where句）の生成
     $where = "";
-
-    if (!empty($created_at)) {
-        $where .= ' AND created_at = :created_at';
+    if (!empty($date)) {
+        $where .= ' AND date = :date';
     }
 
     if (!empty($part)) {
@@ -51,13 +50,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // 条件に合致するレコードを取得
-    $sql = 'SELECT created_at, part, machines.name, weight, time, work_load, note FROM weight_logs JOIN users JOIN machines ON user_id = users.id AND machine_id = machines.id WHERE user_id = :user_id' . $where . ' ORDER BY created_at DESC';
+    $sql = 'SELECT date, part, machines.name, weight, time, set_count, work_load, note FROM weight_logs JOIN users JOIN machines ON user_id = users.id AND machine_id = machines.id WHERE user_id = :user_id' . $where . ' ORDER BY date DESC';
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':user_id', $_SESSION['id'], PDO::PARAM_INT);
 
-    if (!empty($created_at)) {
-        $stmt->bindValue(':created_at', $created_at, PDO::PARAM_STR);
+    if (!empty($date)) {
+        $stmt->bindValue(':date', $date, PDO::PARAM_STR);
     }
 
     if (!empty($part)) {
@@ -69,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     $stmt->execute();
+    $result = $stmt->fetchAll();
 }
 
 // ヘッダーのパス指定
@@ -91,8 +91,8 @@ $path_users = '../users/';
     <!-- セレクトボックス -->
     <form method="post">
         <div>
-            <label for="created_at">日付</label>
-            <input type="date" name="created_at" max="9999-12-31" id="created_at" value="">
+            <label for="date">日付</label>
+            <input type="date" name="date" max="9999-12-31" id="date" value="">
         </div>
         <div>
             <label for="part">部位</label>
@@ -117,28 +117,36 @@ $path_users = '../users/';
 
 
     <div>
-        <table>
-            <tr>
-                <th>日付</th>
-                <th>部位</th>
-                <th>マシン</th>
-                <th>重量</th>
-                <th>回数</th>
-                <th>負荷</th>
-                <th>メモ</th>
-            </tr>
-            <?php foreach ($stmt as $log) : ?>
+        <?php if (!empty($result)) : ?>
+            <table>
                 <tr>
-                    <td><?= $log['created_at'] ?></td>
-                    <td><?= $log['part'] ?></td>
-                    <td><?= $log['name'] ?></td>
-                    <td><?= $log['weight'] ?></td>
-                    <td><?= $log['time'] ?></td>
-                    <td><?= $log['work_load'] ?></td>
-                    <td> <?= $log['note'] ?></td>
+                    <th>日付</th>
+                    <th>部位</th>
+                    <th>マシン</th>
+                    <th>重量</th>
+                    <th>回数</th>
+                    <th>セット</th>
+                    <th>トータル</th>
+                    <th>負荷</th>
+                    <th>メモ</th>
                 </tr>
-            <?php endforeach ?>
-        </table>
+                <?php foreach ($result as $log) : ?>
+                    <tr>
+                        <td><?= $log['date'] ?></td>
+                        <td><?= $log['part'] ?></td>
+                        <td><?= $log['name'] ?></td>
+                        <td><?= $log['weight'] . ' kg' ?></td>
+                        <td><?= $log['time'] . ' 回' ?></td>
+                        <td><?= $log['set_count'] . ' セット' ?></td>
+                        <td><?= $log['time'] * $log['set_count'] . ' 回' ?></td>
+                        <td><?= $log['work_load'] ?></td>
+                        <td> <?= $log['note'] ?></td>
+                    </tr>
+                <?php endforeach ?>
+            </table>
+        <?php else : ?>
+            <p>該当する筋トレログはありません</p>
+        <?php endif ?>
     </div>
 
     <script src="../js/bootstrap.bundle.min.js"></script>
