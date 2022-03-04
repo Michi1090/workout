@@ -21,6 +21,10 @@ if (isset($_SESSION['id'])) {
 $form_parts = ['肩', '腕', '胸', '腹', '背中', '脚', '有酸素運動', 'その他'];
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') { // GETでアクセスした場合
+    // トークンの生成（CSRF対策）
+    $token = bin2hex(random_bytes(32));
+    $_SESSION['token'] = $token;
+
     // 入力フォームの初期値
     $date = $part = $machine = '';
 
@@ -30,8 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { // GETでアクセスした場合
     $stmt->bindValue(':user_id', $_SESSION['id'], PDO::PARAM_INT);
     $stmt->execute();
     $result = $stmt->fetchAll();
-} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') { // フォームから値が入力された場合
+} elseif (!empty($_SESSION['token']) && $_POST['token'] === $_SESSION['token']) { // フォームから値が入力された場合
     // フォームの入力値を代入
+    $token = $_POST['token'];
     $date = $_POST['date'];
     $part = $_POST['part'];
     $machine = $_POST['machine'];
@@ -68,6 +73,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { // GETでアクセスした場合
 
     $stmt->execute();
     $result = $stmt->fetchAll();
+} else { // 正規のアクセスでない場合
+    @die('不正なアクセスが実行されました');
 }
 
 // ヘッダーのパス指定
@@ -89,6 +96,7 @@ $path_users = '../users/';
 
     <!-- セレクトボックス -->
     <form method="post">
+        <input type="hidden" name="token" value="<?= $token ?>">
         <div>
             <label for="date">日付</label>
             <input type="date" name="date" max="9999-12-31" id="date" value="<?= $date ?>">

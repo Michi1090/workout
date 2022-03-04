@@ -37,9 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			// セッションIDを新しく生成（セッションハイジャック対策）
 			session_regenerate_id();
 
-			// トークンの生成（CSRF対策）
-			$_SESSION['token'] = bin2hex(random_bytes(32));
-
 			// インデックスページへリダイレクト
 			header('Location: ../logs/index.php');
 			exit;
