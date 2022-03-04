@@ -96,30 +96,30 @@ $path_users = '../users/';
 
     <!-- セレクトボックス -->
     <form method="post">
-        <input type="hidden" name="token" value="<?= $token ?>">
+        <input type="hidden" name="token" value="<?= escape($token) ?>">
         <div>
             <label for="date">日付</label>
-            <input type="date" name="date" max="9999-12-31" id="date" value="<?= $date ?>">
+            <input type="date" name="date" max="9999-12-31" id="date" value="<?= escape($date) ?>">
         </div>
         <div>
             <label for="part">部位</label>
             <select name="part" id="part">
                 <option value="">--</option>
                 <?php foreach ($form_parts as $form_part) : ?>
-                    <?php $checked = $form_part === $part ? 'selected' : '' ?>
-                    <option value="<?= $form_part ?>" <?= $checked ?>><?= $form_part ?></option>
+                    <!-- POSTで選択された$partと値が合致する場合、selected属性を付加する -->
+                    <option value="<?= escape($form_part) ?>" <?= $form_part === $part ? 'selected' : '' ?>><?= escape($form_part) ?></option>
                 <?php endforeach ?>
             </select>
         </div>
         <div>
             <label for="machine">マシン</label>
-            <input type="text" name="machine" value="<?= $machine ?>">
+            <input type="text" name="machine" value="<?= escape($machine) ?>">
         </div>
         <input type="submit" value="検索">
         <input type="button" value="クリア" onclick="location.href='index.php'">
     </form>
 
-
+    <!-- 筋トレログ表示 -->
     <div>
         <?php if (!empty($result)) : ?>
             <table>
@@ -135,14 +135,14 @@ $path_users = '../users/';
                 </tr>
                 <?php foreach ($result as $log) : ?>
                     <tr>
-                        <td><?= $log['date'] ?></td>
-                        <td><?= $log['part'] ?></td>
-                        <td><?= $log['machine'] ?></td>
-                        <td><?= $log['weight'] . ' kg' ?></td>
-                        <td><?= $log['time'] . ' 回' ?></td>
-                        <td><?= $log['set_count'] . ' SET' ?></td>
-                        <td><?= $log['work_load'] ?></td>
-                        <td> <?= $log['note'] ?></td>
+                        <td><?= escape($log['date']) ?></td>
+                        <td><?= escape($log['part']) ?></td>
+                        <td><?= escape($log['machine']) ?></td>
+                        <td><?= escape($log['weight']) . ' kg' ?></td>
+                        <td><?= escape($log['time']) . ' 回' ?></td>
+                        <td><?= escape($log['set_count']) . ' SET' ?></td>
+                        <td><?= escape($log['work_load']) ?></td>
+                        <td> <?= escape($log['note']) ?></td>
                     </tr>
                 <?php endforeach ?>
             </table>
