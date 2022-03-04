@@ -17,6 +17,7 @@ if (isset($_SESSION['id'])) {
             <li><a href="<?= escape($path_users) ?>login.php">ログイン</a></li>
             <li><a href="<?= escape($path_users) ?>logout.php">ログアウト</a></li>
             <li><a href="<?= escape($path_users) ?>sign_up.php">新規登録</a></li>
+            <li><a href="<?= escape($path_logs) ?>create.php">トレーニングログ作成</a></li>
         </ul>
     </nav>
 </header>
