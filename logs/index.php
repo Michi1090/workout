@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { // GETでアクセスした場合
     $date = $part = $machine = '';
 
     // ユーザーの全筋トレログを取得
-    $sql = 'SELECT date, part, machine, weight, time, set_count, work_load, note FROM weight_logs JOIN users ON user_id = users.id WHERE user_id = :user_id ORDER BY date DESC';
+    $sql = 'SELECT weight_logs.id, date, part, machine, weight, time, set_count, work_load, note FROM weight_logs JOIN users ON user_id = users.id WHERE user_id = :user_id ORDER BY date DESC';
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':user_id', $_SESSION['id'], PDO::PARAM_INT);
     $stmt->execute();
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { // GETでアクセスした場合
     }
 
     // 条件に合致するレコードを取得
-    $sql = 'SELECT date, part, machine, weight, time, set_count, work_load, note FROM weight_logs JOIN users ON user_id = users.id WHERE user_id = :user_id' . $where . ' ORDER BY date DESC';
+    $sql = 'SELECT weight_logs.id, date, part, machine, weight, time, set_count, work_load, note FROM weight_logs JOIN users ON user_id = users.id WHERE user_id = :user_id' . $where . ' ORDER BY date DESC';
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':user_id', $_SESSION['id'], PDO::PARAM_INT);
     if (!empty($date)) {
@@ -98,7 +98,7 @@ $path_users = '../users/';
             <select name="part" id="part">
                 <option value="">--</option>
                 <?php foreach ($form_parts as $form_part) : ?>
-                    <!-- POSTで選択された$partと値が合致する場合、selected属性を付加する -->
+                    <!-- 検索で入力された値とする場合、selected属性を付加する -->
                     <option value="<?= escape($form_part) ?>" <?= $form_part === $part ? 'selected' : '' ?>><?= escape($form_part) ?></option>
                 <?php endforeach ?>
             </select>
@@ -127,6 +127,7 @@ $path_users = '../users/';
                 </tr>
                 <?php foreach ($result as $log) : ?>
                     <tr>
+                        <?php $id = $log['id']; ?>
                         <td><?= escape($log['date']) ?></td>
                         <td><?= escape($log['part']) ?></td>
                         <td><?= escape($log['machine']) ?></td>
@@ -135,6 +136,8 @@ $path_users = '../users/';
                         <td><?= escape($log['set_count']) . ' set' ?></td>
                         <td><?= escape($log['work_load']) ?></td>
                         <td> <?= escape($log['note']) ?></td>
+                        <td><a href="edit.php?id=<?= $id ?>">編集</a></td>
+                        <td><a href="delete.php?id=<?= $id ?>">削除</a></td>
                     </tr>
                 <?php endforeach ?>
             </table>
