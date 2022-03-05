@@ -29,22 +29,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $result = $stmt->fetch();
 
     /* バリデーション */
-    // 入力されたユーザー名がテーブルに存在するかチェック
+    // ユーザー名の重複
     if ($result['COUNT(*)'] == 1) {
         $errors['name'] = '※このユーザー名は既に使用されています。';
     }
-
-    // 入力されたユーザー名が形式通りかチェック
-    if (!preg_match('/^[a-zA-Z0-9]{1,30}$/', $name)) {
-        $errors['name'] = '※ユーザー名は半角英数字30文字以内で入力してください';
+    // ユーザー名の形式
+    if (!preg_match('/^[a-zA-Z0-9]{1,20}$/', $name)) {
+        $errors['name'] = '※ユーザー名は半角英数字20文字以内で入力してください';
     }
-
-    // 入力されたパスワードが形式通りかチェック
+    // パスワードの形式
     if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$/', $pass)) {
         $errors['pass'] = '※パスワードは半角英数字8文字以上で、英大文字、英子文字、数字を最低1個以上含む必要があります';
     }
-
-    // 確認用パスワードが一致するかチェック
+    // 確認用パスワードとの一致
     if ($pass !== $pass_check) {
         $errors['pass_check'] = '※確認用パスワードが一致しません';
     }
@@ -61,6 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bindValue(':pass', $hash_pass, PDO::PARAM_STR);
         $stmt->execute();
 
+        // セッションIDを新しく生成（セッションハイジャック対策）
+        session_regenerate_id(true);
+
         // 登録に引き続き、ログイン処理を行う
         $sql = 'SELECT * FROM users WHERE name = :name and password = :pass';
         $stmt = $pdo->prepare($sql);
@@ -70,12 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = $stmt->fetch();
         $_SESSION['id'] = $result['id'];
         $_SESSION['name'] = $result['name'];
-
-        // セッションIDを新しく生成（セッションハイジャック対策）
-        session_regenerate_id();
-
-        // トークンの生成（CSRF対策）
-        $_SESSION['token'] = bin2hex(random_bytes(32));
 
         // インデックスページへリダイレクト
         header('Location: ../logs/index.php');

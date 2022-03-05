@@ -30,12 +30,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if ($result !== false) {
 		// レコード取得に成功（ユーザー登録あり）した場合、パスワードチェックを行う
 		if (password_verify($pass, $result['password'])) {
+			// セッションIDを新しく生成（セッションハイジャック対策）
+			session_regenerate_id(true);
+
 			// パスワードが一致する場合、ログイン処理を行う
 			$_SESSION['id'] = $result['id'];
 			$_SESSION['name'] = $result['name'];
-
-			// セッションIDを新しく生成（セッションハイジャック対策）
-			session_regenerate_id();
 
 			// インデックスページへリダイレクト
 			header('Location: ../logs/index.php');
