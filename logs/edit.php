@@ -20,7 +20,7 @@ if (isset($_SESSION['id'])) {
 // セレクトボックスの値
 require_once('select_box.php');
 
-// ユーザーの全筋トレログを取得
+// 対象の筋トレログを取得
 $sql = 'SELECT date, part, machine, weight, time, set_count, work_load, note FROM weight_logs WHERE id = :id';
 $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':id', $id, PDO::PARAM_INT);
