@@ -19,7 +19,7 @@ if (isset($_SESSION['id'])) {
 }
 
 // セレクトボックスの値
-$form_parts = ['肩', '腕', '胸', '腹', '背中', '脚', 'その他'];
+require_once('select_box.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') { // GETでアクセスした場合
     // 入力フォームの初期値
@@ -88,7 +88,7 @@ $path_users = '../users/';
 
     <h2><?= escape($message); ?></h2>
 
-    <!-- セレクトボックス -->
+    <!-- 検索フォーム -->
     <form method="post">
         <div>
             <label for="date">日付</label>
@@ -100,7 +100,7 @@ $path_users = '../users/';
                 <option value="">--</option>
                 <?php foreach ($form_parts as $form_part) : ?>
                     <!-- 検索で入力された値とする場合、selected属性を付加する -->
-                    <option value="<?= escape($form_part) ?>" <?= $form_part === $part ? 'selected' : '' ?>><?= escape($form_part) ?></option>
+                    <option <?= $form_part === $part ? 'selected' : '' ?>><?= escape($form_part) ?></option>
                 <?php endforeach ?>
             </select>
         </div>

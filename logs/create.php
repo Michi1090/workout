@@ -19,8 +19,7 @@ if (isset($_SESSION['id'])) {
 }
 
 // セレクトボックスの値
-$form_parts = ['肩', '腕', '胸', '腹', '背中', '脚', 'その他'];
-$form_loads = ['VERY EASY', 'EASY', 'NORMAL', 'HARD', 'VERY HARD'];
+require_once('select_box.php');
 
 // フォームから値が入力された場合
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -75,7 +74,7 @@ $path_users = '../users/';
     <h2>新規トレーニングログ作成</h2>
     <p><?= escape($message) ?></p>
 
-    <!-- セレクトボックス -->
+    <!-- 登録フォーム -->
     <form method="post">
         <div>
             <label for="date">日付</label>
@@ -85,9 +84,8 @@ $path_users = '../users/';
         <div>
             <label for="part">部位</label>
             <select name="part" id="part" required>
-                <option value="">--</option>
                 <?php foreach ($form_parts as $form_part) : ?>
-                    <option value="<?= escape($form_part) ?>"><?= escape($form_part) ?></option>
+                    <option><?= escape($form_part) ?></option>
                 <?php endforeach ?>
             </select>
             <p style="color: red;"><?= isset($errors['part']) ? escape($errors['part']) : '' ?></p>
@@ -118,7 +116,7 @@ $path_users = '../users/';
             <select name="work_load" id="work_load">
                 <option value="">--</option>
                 <?php foreach ($form_loads as $form_load) : ?>
-                    <option value="<?= escape($form_load) ?>"><?= escape($form_load) ?></option>
+                    <option><?= escape($form_load) ?></option>
                 <?php endforeach ?>
             </select>
             <p style="color: red;"><?= isset($errors['work_load']) ? escape($errors['work_load']) : '' ?></p>
