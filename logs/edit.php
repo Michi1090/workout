@@ -10,6 +10,7 @@ session_start();
 
 if (isset($_SESSION['id'])) {
     // ログイン状態のとき
+    $id = $_GET['id'];
     $message = '';
 } else {
     // ログアウト状態のとき、ログインページへリダイレクトする
@@ -28,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { // GETでアクセスした場合
     // ユーザーの全筋トレログを取得
     $sql = 'SELECT date, part, machine, weight, time, set_count, work_load, note FROM weight_logs WHERE id = :id';
     $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':id', $_GET['id'], PDO::PARAM_INT);
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
     $result = $stmt->fetch();
 }
@@ -96,7 +97,6 @@ $path_users = '../users/';
         <div>
             <label for="part">部位</label>
             <select name="part" id="part" required>
-                <option value="">--</option>
                 <?php foreach ($form_parts as $form_part) : ?>
                     <!-- 選択されたログの値と合致する場合、selected属性を付加する -->
                     <option value="<?= escape($form_part) ?>" <?= $form_part === $result['part'] ? 'selected' : '' ?>><?= escape($form_part) ?></option>

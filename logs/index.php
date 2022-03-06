@@ -10,6 +10,7 @@ session_start();
 
 if (isset($_SESSION['id'])) {
     // ログイン状態のとき
+    $user_id = $_SESSION['id'];
     $message = $_SESSION['name'] . ' の筋トレログ一覧';
 } else {
     // ログアウト状態のとき、ログインページへリダイレクトする
@@ -27,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { // GETでアクセスした場合
     // ユーザーの全筋トレログを取得
     $sql = 'SELECT weight_logs.id, date, part, machine, weight, time, set_count, work_load, note FROM weight_logs JOIN users ON user_id = users.id WHERE user_id = :user_id ORDER BY date DESC';
     $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':user_id', $_SESSION['id'], PDO::PARAM_INT);
+    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $result = $stmt->fetchAll();
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') { // フォームから値が入力された場合
@@ -53,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { // GETでアクセスした場合
     // 条件に合致するレコードを取得
     $sql = 'SELECT weight_logs.id, date, part, machine, weight, time, set_count, work_load, note FROM weight_logs JOIN users ON user_id = users.id WHERE user_id = :user_id' . $where . ' ORDER BY date DESC';
     $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':user_id', $_SESSION['id'], PDO::PARAM_INT);
+    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
     if (!empty($date)) {
         $stmt->bindValue(':date', $date, PDO::PARAM_STR);
     }

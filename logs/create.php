@@ -10,6 +10,7 @@ session_start();
 
 if (isset($_SESSION['id'])) {
     // ログイン状態のとき
+    $user_id = $_SESSION['id'];
     $message = '';
 } else {
     // ログアウト状態のとき、ログインページへリダイレクトする
@@ -35,13 +36,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // バリデーション
     require_once('validation.php');
-    
+
     // バリデーションクリア（エラーメッセージなし）の場合
     if (empty($errors)) {
         // 新規レコードを挿入
         $sql = 'INSERT INTO weight_logs (user_id, date, part, machine, weight, time, set_count, work_load, note) VALUES (:user_id, :date, :part, :machine, :weight, :time, :set_count, :work_load, :note)';
         $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':user_id', $_SESSION['id'], PDO::PARAM_INT);
+        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->bindValue(':date', $date, PDO::PARAM_STR);
         $stmt->bindValue(':part', $part, PDO::PARAM_STR);
         $stmt->bindValue(':machine', $machine, PDO::PARAM_STR);

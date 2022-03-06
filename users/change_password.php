@@ -8,14 +8,15 @@ require_once('../sanitize.php');
 // セッションの開始
 session_start();
 
-// ログインしていないとき、ログインページへリダイレクト
-if (!isset($_SESSION['id'])) {
+if (isset($_SESSION['id'])) {
+    // ログイン状態のとき
+    $id = $_SESSION['id'];
+    $message = '現在のパスワードと新しいパスワードを入力してください';
+} else {
+    // ログインしていないとき、ログインページへリダイレクト
     header('Location: login.php');
     exit;
 }
-
-// GETでアクセスしたときの初期メッセージ
-$message = '現在のパスワードと新しいパスワードを入力してください';
 
 // フォームから値が入力された場合
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -27,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // ログインユーザーのパスワードを取得
     $sql = 'SELECT password FROM users WHERE id = :id';
     $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':id', $_SESSION['id'], PDO::PARAM_INT);
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
     $result = $stmt->fetch();
 
@@ -55,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // パスワードの更新処理を行う
         $sql = 'UPDATE users SET password = :pass WHERE id = :id';
         $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':id', $_SESSION['id'], PDO::PARAM_INT);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->bindValue(':pass', $hash_pass, PDO::PARAM_STR);
         $stmt->execute();
 

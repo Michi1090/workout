@@ -8,8 +8,11 @@ require_once('../sanitize.php');
 // セッションの開始
 session_start();
 
-// ログインしていないとき、ログインページへリダイレクト
-if (!isset($_SESSION['id'])) {
+if (isset($_SESSION['id'])) {
+    // ログイン状態のとき
+    $id = $_SESSION['id'];
+} else {
+    // ログインしていないとき、ログインページへリダイレクト
     header('Location: login.php');
     exit;
 }
@@ -22,13 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // ログインユーザーのパスワードを取得
     $sql = 'SELECT password FROM users WHERE id = :id';
     $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':id', $_SESSION['id'], PDO::PARAM_INT);
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
     $result = $stmt->fetch();
 
     if (password_verify($pass, $result['password'])) {
         // パスワードが一致する場合、ユーザー登録を削除
-        $id = $_SESSION['id'];
         $sql = 'DELETE FROM users WHERE id = :id';
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
@@ -69,7 +71,7 @@ $path_users = './';
             <p style="color: red;"><?= isset($error) ? escape($error) : '' ?></p>
         </div>
         <input type="button" value="戻る" onclick="history.back(-1)">
-        <input type="submit" value="確認">
+        <input type="submit" value="削除">
     </form>
 
     <script src="../js/bootstrap.bundle.min.js"></script>

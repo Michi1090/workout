@@ -13,15 +13,15 @@ if (mb_strlen($machine) < 1 || mb_strlen($machine) > 20) {
     $errors['machine'] = '※マシンは1～20文字で登録してください';
 }
 // 重量
-if (!empty($weight) && !preg_match('/^([1-9][0-9]{0,2}|0)(\.[0-9])?$/', $weight)) {
+if (!empty($weight) && !preg_match('/^([0-9]{1,3})(\.[0-9])?$/', $weight)) {
     $errors['weight'] = '※重量は0～999.9kgで登録してください';
 }
 // 回数
-if (!empty($time) && !preg_match('/^[1-9][0-9]?|0$/', $time)) {
+if (!empty($time) && !preg_match('/^[0-9]{1,2}$/', $time)) {
     $errors['time'] = '※回数は0～99回で登録してください';
 }
 // セット
-if (!empty($set_count) && !preg_match('/^[1-9][0-9]?|0$/', $set_count)) {
+if (!empty($set_count) && !preg_match('/^[0-9]{1,2}$/', $set_count)) {
     $errors['set_count'] = '※SETは0～99回で登録してください';
 }
 // 負荷
