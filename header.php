@@ -1,23 +1,22 @@
-<?php
+<!--  ロジック
+================================================================================================  -->
+<?php require_once('sanitize.php'); ?>
 
-require_once('sanitize.php');
 
-if (isset($_SESSION['id'])) {
-    $name = $_SESSION['name'];
-} else {
-    $name = '';
-}
-?>
-
+<!--  ビュー
+================================================================================================  -->
 <header>
-    <h1><a href="<?= escape($path_logs) ?>index.php">My Workout</a></h1>
     <nav>
+        <h1><a href="<?= escape($path_logs) ?>index.php">My Workout</a></h1>
         <ul>
-            <li><a href="<?= escape($path_users) ?>my_page.php">ログインユーザー : <?= escape($name) ?></a></li>
-            <li><a href="<?= escape($path_users) ?>login.php">ログイン</a></li>
-            <li><a href="<?= escape($path_users) ?>logout.php">ログアウト</a></li>
-            <li><a href="<?= escape($path_users) ?>sign_up.php">新規登録</a></li>
-            <li><a href="<?= escape($path_logs) ?>create.php">トレーニングログ作成</a></li>
+            <?php if (isset($_SESSION['id'])) : ?>
+                <li><a href="<?= escape($path_logs) ?>create.php">トレーニングログ作成</a></li>
+                <li><a href="<?= escape($path_users) ?>my_page.php">ログインユーザー : <?= escape($_SESSION['name']) ?></a></li>
+                <li><a href="<?= escape($path_users) ?>logout.php">ログアウト</a></li>
+            <?php else : ?>
+                <li><a href="<?= escape($path_users) ?>login.php">ログイン</a></li>
+                <li><a href="<?= escape($path_users) ?>sign_up.php">ユーザー登録</a></li>
+            <?php endif ?>
         </ul>
     </nav>
 </header>
