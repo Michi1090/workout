@@ -11,7 +11,6 @@ session_start();
 if (isset($_SESSION['id'])) {
     // ログイン状態のとき
     $id = $_SESSION['id'];
-    $message = '現在のパスワードと新しいパスワードを入力してください';
 } else {
     // ログインしていないとき、ログインページへリダイレクト
     header('Location: login.php');
@@ -60,7 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bindValue(':pass', $hash_pass, PDO::PARAM_STR);
         $stmt->execute();
 
-        $message = 'パスワードが変更されました';
+        // マイページへリダイレクト
+        header('Location: my_page.php');
+        exit;
     }
 }
 
@@ -80,7 +81,7 @@ $path_users = './';
     <?php require_once('../header.php') ?>
 
     <h2>パスワード変更ページ</h2>
-    <p><?= escape($message) ?></p>
+    <p>現在のパスワードと新しいパスワードを入力してください</p>
     <form method="post">
         <div>
             <label>現在のパスワード</label>

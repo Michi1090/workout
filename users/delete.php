@@ -30,8 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $result = $stmt->fetch();
 
     if (password_verify($pass, $result['password'])) {
-        // パスワードが一致する場合、ユーザー登録を削除
-        $sql = 'DELETE FROM users WHERE id = :id';
+        // パスワードが一致する場合、ユーザー登録と対象ユーザーに紐づくログを削除
+        $sql = 'DELETE users, weight_logs FROM users LEFT JOIN weight_logs ON users.id = user_id WHERE users.id = :id';
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -70,7 +70,7 @@ $path_users = './';
             <input type="password" name="pass" required>
             <p style="color: red;"><?= isset($error) ? escape($error) : '' ?></p>
         </div>
-        <input type="button" value="戻る" onclick="history.back(-1)">
+        <button type="button"><a href="my_page.php">戻る</a></button>
         <input type="submit" value="削除">
     </form>
 

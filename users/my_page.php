@@ -35,6 +35,7 @@ $path_users = './';
     <p><?= escape($message) ?></p>
     <p>こちらのページからパスワードの変更とユーザー登録の削除を行えます。</p>
     <div>
+        <a href="../logs/index.php">トレーニングログ一覧</a>
         <a href="change_password.php">パスワード変更</a>
         <a href="delete.php">ユーザー登録削除</a>
     </div>
