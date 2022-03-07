@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		}
 	} else {
 		// レコード取得に失敗（ユーザー登録なし）した場合
-		$error = '※ユーザー名、またはパスワードが違います。ユーザー登録をされていない方は先にユーザー登録をしてください。';
+		$error = '※ユーザー名、またはパスワードが違います。ユーザー登録をされていない方は先に新規登録をしてください。';
 	}
 }
 
@@ -65,20 +65,45 @@ $path_users = './';
 	<!-- header 読み込み -->
 	<?php require_once('../header.php') ?>
 
-	<h2>ログイン</h2>
-	<p>ユーザー名とパスワードを入力してください</p>
-	<p style="color: red;"><?= isset($error) ? escape($error) : '' ?></p>
-	<form method="post">
-		<div>
-			<label>ユーザー名</label>
-			<input type="text" name="name" required>
+	<main>
+		<div class="container">
+			<div class="justify-content-center">
+				<!-- カード -->
+				<div class="card">
+					<!-- カードヘッダー -->
+					<div class="card-header">
+						<h1 class="text-center my-2">ログイン</h1>
+					</div>
+					<!-- カードボディ -->
+					<div class="card-body">
+						<p class="mb-2">ユーザー名とパスワードを入力してください</p>
+						<p class="text-danger small mb-3"><?= isset($error) ? escape($error) : '' ?></p>
+						<!-- 入力フォーム -->
+						<form method="post">
+							<div class="form-group mb-2">
+								<label class="form-label" for="name">ユーザー名</label>
+								<input class="form-control" type="text" name="name" id="name" required>
+							</div>
+							<div class="form-group mb-4">
+								<label class="col-form-label" for="pass">パスワード</label>
+								<input class="form-control" type="password" name="pass" id="pass" required>
+							</div>
+							<div class="form-group mb-3">
+								<div class="d-grid">
+									<button class="btn btn-warning" type="submit">
+										ログイン
+									</button>
+								</div>
+							</div>
+							<div class="text-center">
+								<a href="sign_up.php">新規ユーザー登録はこちらから</a>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
 		</div>
-		<div>
-			<label>パスワード</label>
-			<input type="password" name="pass" required>
-		</div>
-		<input type="submit" value="ログイン">
-	</form>
+	</main>
 
 	<script src="../js/bootstrap.bundle.min.js"></script>
 </body>
