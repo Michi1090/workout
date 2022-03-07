@@ -54,6 +54,7 @@ $path_users = '../users/';
     <!-- 削除フォーム -->
     <form method="post">
         <input type="hidden" name="id" value="<?= escape($id) ?>">
+        <input type="button" value="戻る" onclick="location.href='index.php'">
         <input type="submit" value="削除">
     </form>
 

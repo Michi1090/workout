@@ -137,6 +137,7 @@ $path_users = '../users/';
             <p style="color: red;"><?= isset($errors['note']) ? escape($errors['note']) : '' ?></p>
         </div>
         <input type="submit" value="更新">
+        <input type="button" value="戻る" onclick="location.href='index.php'">
     </form>
 
     <script src="../js/bootstrap.bundle.min.js"></script>

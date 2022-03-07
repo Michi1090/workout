@@ -98,6 +98,7 @@ $path_users = './';
             <input type="password" name="pass_check" required>
             <p style="color: red;"><?= isset($errors['pass_check']) ? escape($errors['pass_check']) : '' ?></p>
         </div>
+        <input type="button" value="戻る" onclick="location.href='my_page.php'">
         <input type="submit" value="変更">
     </form>
 

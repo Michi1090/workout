@@ -70,7 +70,7 @@ $path_users = './';
             <input type="password" name="pass" required>
             <p style="color: red;"><?= isset($error) ? escape($error) : '' ?></p>
         </div>
-        <button type="button"><a href="my_page.php">戻る</a></button>
+        <input type="button" value="戻る" onclick="location.href='my_page.php'">
         <input type="submit" value="削除">
     </form>
 

@@ -125,9 +125,9 @@ $path_users = '../users/';
             <label for="note">メモ</label>
             <input type="text" name="note" id="note" size="50" maxlength="30">
             <p style="color: red;"><?= isset($errors['note']) ? escape($errors['note']) : '' ?></p>
-
         </div>
         <input type="submit" value="登録">
+        <input type="button" value="戻る" onclick="location.href='index.php'">
     </form>
 
     <script src="../js/bootstrap.bundle.min.js"></script>
