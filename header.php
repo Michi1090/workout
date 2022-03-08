@@ -9,7 +9,9 @@
 <header>
     <nav class="navbar navbar-expand navbar-light bg-warning mb-5">
         <div class=container-fluid>
-            <a class="navbar-brand site-logo" href="<?= escape($path_logs) ?>index.php">My Workout</a>
+            <a class="navbar-brand site-logo" href="<?= escape($path_logs) ?>index.php">
+                <i class="fa-solid fa-dumbbell me-1"></i>My Workout
+            </a>
             <div class="collapse navbar-collapse justify-content-end">
                 <ul class="navbar-nav">
                     <!-- ここからドロップダウン -->
