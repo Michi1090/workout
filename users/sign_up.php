@@ -92,26 +92,48 @@ $path_users = './';
     <!-- header 読み込み -->
     <?php require_once('../header.php') ?>
 
-    <h2>新規登録ページ</h2>
-    <p>任意のユーザー名とパスワードを入力してください</p>
-    <form method="post">
-        <div>
-            <label>ユーザー名</label>
-            <input type="text" name="name" required>
-            <p style="color: red;"><?= isset($errors['name']) ? escape($errors['name']) : '' ?></p>
+    <main>
+        <div class="container">
+            <div class="justify-content-center">
+                <!-- カード -->
+                <div class="card">
+                    <!-- カードヘッダー -->
+                    <div class="card-header">
+                        <h1 class="text-center my-2">ユーザー登録</h1>
+                    </div>
+                    <!-- カードボディ -->
+                    <div class="card-body">
+                        <p class="mb-3">任意のユーザー名とパスワードを登録してください</p>
+                        <!-- 入力フォーム -->
+                        <form method="post">
+                            <div class="form-group mb-2">
+                                <label class="form-label" for="name">ユーザー名</label>
+                                <input class="form-control" type="text" name="name" id="name" required>
+                                <p class="text-danger small mb-0"><?= isset($errors['name']) ? escape($errors['name']) : '' ?></p>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label class="col-form-label" for="pass">パスワード</label>
+                                <input class="form-control" type="password" name="pass" id="pass" required>
+                                <p class="text-danger small mb-0"><?= isset($errors['pass']) ? escape($errors['pass']) : '' ?></p>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label class="col-form-label" for="pass_check">パスワード（確認用）</label>
+                                <input class="form-control" type="password" name="pass_check" id="pass_check" required>
+                                <p class="text-danger small mb-0"><?= isset($errors['pass_check']) ? escape($errors['pass_check']) : '' ?></p>
+                            </div>
+                            <div class="form-group mb-3">
+                                <div class="d-grid">
+                                    <button class="btn btn-warning" type="submit">
+                                        登録
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-            <label>パスワード</label>
-            <input type="password" name="pass" required>
-            <p style="color: red;"><?= isset($errors['pass']) ? escape($errors['pass']) : '' ?></p>
-        </div>
-        <div>
-            <label>パスワード（確認用）</label>
-            <input type="password" name="pass_check" required>
-            <p style="color: red;"><?= isset($errors['pass_check']) ? escape($errors['pass_check']) : '' ?></p>
-        </div>
-        <input type="submit" value="登録">
-    </form>
+    </main>
 
     <script src="../js/bootstrap.bundle.min.js"></script>
 </body>
