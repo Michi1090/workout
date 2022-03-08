@@ -80,18 +80,16 @@ $path_users = './';
 						<p class="text-danger small mb-3"><?= isset($error) ? escape($error) : '' ?></p>
 						<!-- 入力フォーム -->
 						<form method="post">
-							<div class="form-group mb-2">
+							<div class="mb-2">
 								<label class="form-label" for="name">ユーザー名</label>
 								<input class="form-control" type="text" name="name" id="name" required>
 							</div>
-							<div class="form-group mb-4">
+							<div class="mb-4">
 								<label class="col-form-label" for="pass">パスワード</label>
 								<input class="form-control" type="password" name="pass" id="pass" required>
 							</div>
-							<div class="form-group mb-3">
-								<div class="d-grid">
-									<button class="btn btn-warning" type="submit">ログイン</button>
-								</div>
+							<div class="mb-3 d-grid">
+								<button class="btn btn-warning" type="submit">ログイン</button>
 							</div>
 							<div class="text-center">
 								<a href="sign_up.php">新規ユーザー登録はこちらから</a>

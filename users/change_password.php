@@ -94,26 +94,24 @@ $path_users = './';
                         <p class="mb-3">現在のパスワードと新しいパスワードを入力してください</p>
                         <!-- 入力フォーム -->
                         <form method="post">
-                            <div class="form-group mb-2">
+                            <div class="mb-2">
                                 <label class="form-label" for="name">現在のパスワード</label>
                                 <input class="form-control" type="password" name="pass" id="pass" required>
                                 <p class="text-danger small mb-0"><?= isset($errors['pass']) ? escape($errors['pass']) : '' ?></p>
                             </div>
-                            <div class="form-group mb-2">
+                            <div class="mb-2">
                                 <label class="col-form-label" for="pass">新しいパスワード</label>
                                 <input class="form-control" type="password" name="pass_new" id="pass_new" required>
                                 <p class="text-danger small mb-0"><?= isset($errors['pass_new']) ? escape($errors['pass_new']) : '' ?></p>
                             </div>
-                            <div class="form-group mb-4">
+                            <div class="mb-4">
                                 <label class="col-form-label" for="pass_check">パスワード（確認用）</label>
                                 <input class="form-control" type="password" name="pass_check" id="pass_check" required>
                                 <p class="text-danger small mb-0"><?= isset($errors['pass_check']) ? escape($errors['pass_check']) : '' ?></p>
                             </div>
-                            <div class="form-group mb-3">
-                                <div class="d-grid gap-3">
-                                    <a class="btn btn-secondary" href="my_page.php">戻る</a>
-                                    <button class="btn btn-warning" type="submit">更新</button>
-                                </div>
+                            <div class="mb-3 d-grid gap-3">
+                                <a class="btn btn-secondary" href="my_page.php">戻る</a>
+                                <button class="btn btn-warning" type="submit">更新</button>
                             </div>
                         </form>
                     </div>

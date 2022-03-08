@@ -106,25 +106,23 @@ $path_users = './';
                         <p class="mb-3">任意のユーザー名とパスワードを登録してください</p>
                         <!-- 入力フォーム -->
                         <form method="post">
-                            <div class="form-group mb-2">
+                            <div class="mb-2">
                                 <label class="form-label" for="name">ユーザー名</label>
                                 <input class="form-control" type="text" name="name" id="name" required>
                                 <p class="text-danger small mb-0"><?= isset($errors['name']) ? escape($errors['name']) : '' ?></p>
                             </div>
-                            <div class="form-group mb-2">
+                            <div class="mb-2">
                                 <label class="col-form-label" for="pass">パスワード</label>
                                 <input class="form-control" type="password" name="pass" id="pass" required>
                                 <p class="text-danger small mb-0"><?= isset($errors['pass']) ? escape($errors['pass']) : '' ?></p>
                             </div>
-                            <div class="form-group mb-4">
+                            <div class="mb-4">
                                 <label class="col-form-label" for="pass_check">パスワード（確認用）</label>
                                 <input class="form-control" type="password" name="pass_check" id="pass_check" required>
                                 <p class="text-danger small mb-0"><?= isset($errors['pass_check']) ? escape($errors['pass_check']) : '' ?></p>
                             </div>
-                            <div class="form-group mb-3">
-                                <div class="d-grid">
-                                    <button class="btn btn-warning" type="submit">登録</button>
-                                </div>
+                            <div class="mb-3 d-grid">
+                                <button class="btn btn-warning" type="submit">登録</button>
                             </div>
                         </form>
                     </div>

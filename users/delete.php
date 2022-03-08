@@ -72,7 +72,7 @@ $path_users = './';
                     </div>
                     <!-- カードボディ -->
                     <div class="card-body">
-                        <p class="mb-2">ユーザー登録を削除するには、パスワードを入力して「確認」ボタンを押してください</p>
+                        <p class="mb-2">ユーザー登録を削除するには、パスワードを入力して「削除」ボタンを押してください</p>
                         <!-- 入力フォーム -->
                         <form method="post">
                             <div class="mb-4">
@@ -80,11 +80,9 @@ $path_users = './';
                                 <input class="form-control" type="password" name="pass" id="pass" required>
                                 <p class="text-danger small mb-0"><?= isset($error) ? escape($error) : '' ?></p>
                             </div>
-                            <div class="mb-3">
-                                <div class="d-grid gap-3">
-                                    <a class="btn btn-secondary" href="my_page.php">戻る</a>
-                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal" type="button">削除</button>
-                                </div>
+                            <div class="mb-3 d-grid gap-3">
+                                <a class="btn btn-secondary" href="my_page.php">戻る</a>
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal" type="button">削除</button>
                             </div>
                             <!-- 確認用モーダル -->
                             <?php require_once('delete_confirm_modal.php') ?>
