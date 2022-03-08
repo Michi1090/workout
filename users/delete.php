@@ -61,18 +61,39 @@ $path_users = './';
     <!-- header 読み込み -->
     <?php require_once('../header.php') ?>
 
-    <h2>ユーザー登録削除ページ</h2>
-    <p style="color :red">※一度ユーザー登録を削除すると、すべての筋トレログが削除され元に戻せません。</p>
-    <p>ユーザー登録を削除するには、パスワードを入力して「確認」ボタンを押してください</p>
-    <form method="post">
-        <div>
-            <label>パスワード</label>
-            <input type="password" name="pass" required>
-            <p style="color: red;"><?= isset($error) ? escape($error) : '' ?></p>
+    <main>
+        <div class="container">
+            <div class="justify-content-center">
+                <!-- カード -->
+                <div class="card">
+                    <!-- カードヘッダー -->
+                    <div class="card-header">
+                        <h1 class="text-center my-2">ユーザー登録削除</h1>
+                    </div>
+                    <!-- カードボディ -->
+                    <div class="card-body">
+                        <p class="mb-2">ユーザー登録を削除するには、パスワードを入力して「確認」ボタンを押してください</p>
+                        <!-- 入力フォーム -->
+                        <form method="post">
+                            <div class="mb-4">
+                                <label class="col-form-label" for="pass">パスワード</label>
+                                <input class="form-control" type="password" name="pass" id="pass" required>
+                                <p class="text-danger small mb-0"><?= isset($error) ? escape($error) : '' ?></p>
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-grid gap-3">
+                                    <a class="btn btn-secondary" href="my_page.php">戻る</a>
+                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal" type="button">削除</button>
+                                </div>
+                            </div>
+                            <!-- 確認用モーダル -->
+                            <?php require_once('delete_confirm_modal.php') ?>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        <input type="button" value="戻る" onclick="location.href='my_page.php'">
-        <input type="submit" value="削除">
-    </form>
+    </main>
 
     <script src="../js/bootstrap.bundle.min.js"></script>
 </body>

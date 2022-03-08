@@ -1,10 +1,11 @@
-.site-logo {
-    font-family: 'Oswald', sans-serif;
-    font-size: 24px;
-}
+@charset "UTF-8";
 
 header, main {
   max-width: 576px;
   margin: 0 auto;
 }
 
+.site-logo {
+    font-family: 'Oswald', sans-serif;
+    font-size: 24px;
+}
