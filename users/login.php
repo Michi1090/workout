@@ -90,9 +90,7 @@ $path_users = './';
 							</div>
 							<div class="form-group mb-3">
 								<div class="d-grid">
-									<button class="btn btn-warning" type="submit">
-										ログイン
-									</button>
+									<button class="btn btn-warning" type="submit">ログイン</button>
 								</div>
 							</div>
 							<div class="text-center">

@@ -123,9 +123,7 @@ $path_users = './';
                             </div>
                             <div class="form-group mb-3">
                                 <div class="d-grid">
-                                    <button class="btn btn-warning" type="submit">
-                                        登録
-                                    </button>
+                                    <button class="btn btn-warning" type="submit">登録</button>
                                 </div>
                             </div>
                         </form>
