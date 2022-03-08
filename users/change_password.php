@@ -80,27 +80,47 @@ $path_users = './';
     <!-- header 読み込み -->
     <?php require_once('../header.php') ?>
 
-    <h2>パスワード変更ページ</h2>
-    <p>現在のパスワードと新しいパスワードを入力してください</p>
-    <form method="post">
-        <div>
-            <label>現在のパスワード</label>
-            <input type="password" name="pass" required>
-            <p style="color: red;"><?= isset($errors['pass']) ? escape($errors['pass']) : '' ?></p>
+    <main>
+        <div class="container">
+            <div class="justify-content-center">
+                <!-- カード -->
+                <div class="card">
+                    <!-- カードヘッダー -->
+                    <div class="card-header">
+                        <h1 class="text-center my-2">パスワード変更</h1>
+                    </div>
+                    <!-- カードボディ -->
+                    <div class="card-body">
+                        <p class="mb-3">現在のパスワードと新しいパスワードを入力してください</p>
+                        <!-- 入力フォーム -->
+                        <form method="post">
+                            <div class="form-group mb-2">
+                                <label class="form-label" for="name">現在のパスワード</label>
+                                <input class="form-control" type="password" name="pass" id="pass" required>
+                                <p class="text-danger small mb-0"><?= isset($errors['pass']) ? escape($errors['pass']) : '' ?></p>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label class="col-form-label" for="pass">新しいパスワード</label>
+                                <input class="form-control" type="password" name="pass_new" id="pass_new" required>
+                                <p class="text-danger small mb-0"><?= isset($errors['pass_new']) ? escape($errors['pass_new']) : '' ?></p>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label class="col-form-label" for="pass_check">パスワード（確認用）</label>
+                                <input class="form-control" type="password" name="pass_check" id="pass_check" required>
+                                <p class="text-danger small mb-0"><?= isset($errors['pass_check']) ? escape($errors['pass_check']) : '' ?></p>
+                            </div>
+                            <div class="form-group mb-3">
+                                <div class="d-grid gap-3">
+                                    <a class="btn btn-secondary" href="my_page.php">戻る</a>
+                                    <button class="btn btn-warning" type="submit">更新</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-            <label>新しいパスワード</label>
-            <input type="password" name="pass_new" required>
-            <p style="color: red;"><?= isset($errors['pass_new']) ? escape($errors['pass_new']) : '' ?></p>
-        </div>
-        <div>
-            <label>新しいパスワード（確認用）</label>
-            <input type="password" name="pass_check" required>
-            <p style="color: red;"><?= isset($errors['pass_check']) ? escape($errors['pass_check']) : '' ?></p>
-        </div>
-        <input type="button" value="戻る" onclick="location.href='my_page.php'">
-        <input type="submit" value="変更">
-    </form>
+    </main>
 
     <script src="../js/bootstrap.bundle.min.js"></script>
 </body>
