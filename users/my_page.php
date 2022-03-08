@@ -52,7 +52,6 @@ $path_users = './';
                             <a class="btn btn-danger" href="delete.php">ユーザー登録削除</a>
                         </div>
                     </div>
-                    </form>
                 </div>
             </div>
         </div>
