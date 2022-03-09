@@ -17,11 +17,11 @@
             <div class="modal-footer">
                 <div class="container-fluid">
                     <div class="row mb-3">
-                        <button class="btn btn-danger col me-2" data-bs-toggle="modal" data-bs-target="#confirmModal" type="submit">削除</button>
+                        <button class="btn btn-danger col me-2" data-bs-toggle="modal" data-bs-target="#confirmModal" type="button" onclick="return submit();">削除</button>
                         <button class="btn btn-secondary col ms-2" data-bs-dismiss="modal" data-bs-target="#confirmModal" type="button">閉じる</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div><!-- モーダルウィンドウ終了 -->
+</div>

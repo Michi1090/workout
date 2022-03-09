@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
-    $result = $stmt->fetch();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (password_verify($pass, $result['password'])) {
         // パスワードが一致する場合、ユーザー登録と対象ユーザーに紐づくログを削除
@@ -74,7 +74,7 @@ $path_users = './';
                     <div class="card-body">
                         <p class="mb-2">ユーザー登録を削除するには、パスワードを入力して「削除」ボタンを押してください</p>
                         <!-- 入力フォーム -->
-                        <form method="post">
+                        <form method="post" onsubmit="return false;">
                             <div class="mb-4">
                                 <label class="col-form-label" for="pass">パスワード</label>
                                 <input class="form-control" type="password" name="pass" id="pass" required>

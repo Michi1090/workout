@@ -25,7 +25,7 @@ $sql = 'SELECT date, part, machine, weight, time, set_count, work_load, note FRO
 $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 $stmt->execute();
-$result = $stmt->fetch();
+$result = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // フォームから値が入力された場合
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

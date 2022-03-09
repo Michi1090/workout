@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':name', $name, PDO::PARAM_STR);
     $stmt->execute();
-    $result = $stmt->fetch();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
     /* バリデーション */
     // ユーザー名の重複
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bindValue(':name', $name, PDO::PARAM_STR);
         $stmt->bindValue(':pass', $hash_pass, PDO::PARAM_STR);
         $stmt->execute();
-        $result = $stmt->fetch();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
         $_SESSION['id'] = $result['id'];
         $_SESSION['name'] = $result['name'];
 

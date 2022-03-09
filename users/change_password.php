@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
-    $result = $stmt->fetch();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
     /* バリデーション */
     // パスワードが一致するかチェック
