@@ -25,10 +25,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { // GETでアクセスした場合
     // 入力フォームの初期値
     $date = $part = $machine = '';
 
+    //SQL文を変数にいれる。$count_sqlはデータの件数取得に使うための変数。
+    $count_sql = 'SELECT COUNT(*) as cnt FROM weight_logs  WHERE user_id = :user_id ';
+
+    //最大ページ数を取得する。
+    //５件ずつ表示させているので、$count['cnt']に入っている件数を５で割って小数点は切りあげると最大ページ数になる。
+    $counts = $pdo->prepare($count_sql);
+    $counts->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+    $counts->execute();
+    $count = $counts->fetch(PDO::FETCH_ASSOC);
+    $max_page = ceil($count['cnt'] / 5);
+
+    //ページ数を取得する。GETでページが渡ってこなかった時(最初のページ)のときは$pageに１を格納する。
+    if (isset($_GET['page']) && is_numeric($_GET['page'])) {
+        $page = $_GET['page'];
+    } else {
+        $page = 1;
+    }
+
+    // ページ番号
+    if ($page == 1 || $page == $max_page) {
+        $range = 4;
+    } elseif ($page == 2 || $page == $max_page - 1) {
+        $range = 3;
+    } else {
+        $range = 2;
+    }
+
+    // ?件目の表示
+    $from_record = ($page - 1) * 5 + 1;
+
+    if ($page == $max_page && $count['cnt'] % 5 !== 0
+    ) {
+        $to_record = ($page - 1) * 5 + $count['cnt'] % 5;
+    } else {
+        $to_record = $page * 5;
+    }
+
     // ユーザーの全筋トレログを取得
-    $sql = 'SELECT weight_logs.id, date, part, machine, weight, time, set_count, work_load, note FROM weight_logs JOIN users ON user_id = users.id WHERE user_id = :user_id ORDER BY date DESC';
+    $sql = 'SELECT weight_logs.id, date, part, machine, weight, time, set_count, work_load, note FROM weight_logs JOIN users ON user_id = users.id WHERE user_id = :user_id ORDER BY date DESC LIMIT :start, 5';
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->bindValue(':start', $from_record - 1, PDO::PARAM_INT);
     $stmt->execute();
     $result = $stmt->fetchAll();
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') { // フォームから値が入力された場合
@@ -146,6 +184,34 @@ $path_users = '../users/';
             <p>該当する筋トレログはありません</p>
         <?php endif ?>
     </div>
+
+    <!-- ページネーション -->
+    <!-- 戻るボタン -->
+    <div class="pagination">
+        <?php if ($page >= 2) : ?>
+            <a href="index.php?page=<?php echo ($page - 1); ?>" class="page_feed">&laquo;</a>
+        <?php else :; ?>
+            <span class="first_last_page">&laquo;</span>
+        <?php endif; ?>
+        <!-- ページ番号 -->
+        <?php for ($i = 1; $i <= $max_page; $i++) : ?>
+            <?php if ($i >= $page - $range && $i <= $page + $range) : ?>
+                <?php if ($i == $page) : ?>
+                    <span class="now_page_number"><?php echo $i; ?></span>
+                <?php else : ?>
+                    <a href="?page=<?php echo $i; ?>" class="page_number"><?php echo $i; ?></a>
+                <?php endif; ?>
+            <?php endif; ?>
+        <?php endfor; ?>
+        <!-- 進む -->
+        <?php if ($page < $max_page) : ?>
+            <a href="index.php?page=<?php echo ($page + 1); ?>" class="page_feed">&raquo;</a>
+        <?php else : ?>
+            <span class="first_last_page">&raquo;</span>
+        <?php endif; ?>
+    </div>
+    <!-- ?件目の表示 -->
+    <p class="from_to"><?php echo $count['cnt']; ?>件中 <?php echo $from_record; ?> - <?php echo $to_record; ?> 件目を表示</p>
 
     <script src="../js/bootstrap.bundle.min.js"></script>
 </body>
