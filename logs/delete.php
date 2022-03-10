@@ -58,7 +58,7 @@ $path_users = '../users/';
         <input type="submit" value="削除">
     </form>
 
-    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script><!-- Bootstrap -->
 </body>
 
 </html>

@@ -140,7 +140,7 @@ $path_users = '../users/';
         <input type="button" value="戻る" onclick="location.href='index.php'">
     </form>
 
-    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script><!-- Bootstrap -->
 </body>
 
 </html>

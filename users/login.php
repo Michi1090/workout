@@ -102,7 +102,7 @@ $path_users = './';
 		</div>
 	</main>
 
-	<script src="../js/bootstrap.bundle.min.js"></script>
+	<script src="../js/bootstrap.bundle.min.js"></script><!-- Bootstrap -->
 </body>
 
 </html>
