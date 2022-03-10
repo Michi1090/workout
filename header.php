@@ -14,10 +14,15 @@
             </a>
             <div class="collapse navbar-collapse justify-content-end">
                 <ul class="navbar-nav">
+                    <!-- インデックスページの時のみ検索アイコンを表示 -->
+                    <?php if (isset($current_index)) : ?>
+                        <li class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#search-modal"><i class="fa-solid fa-magnifying-glass"></i></li>
+                    <?php endif ?>
                     <!-- ここからドロップダウン -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle fw-bold" href="#" data-bs-toggle="dropdown">Menu</a>
                         <div class="dropdown-menu dropdown-menu-end">
+                            <!-- ログイン状態によってメニュー内容を切り替える -->
                             <?php if (isset($_SESSION['id'])) : ?>
                                 <a class="dropdown-item" href="<?= escape($path_logs) ?>create.php">トレーニングログ作成</a>
                                 <a class="dropdown-item" href="<?= escape($path_users) ?>my_page.php">マイページ</a>

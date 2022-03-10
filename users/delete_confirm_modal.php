@@ -1,11 +1,11 @@
-<div class="modal" id="confirmModal" tabindex="-1">
+<div class="modal" id="confirm-modal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <!-- ヘッダー -->
             <div class="modal-header">
                 <h5 class="modal-title">確認</h5>
                 <!-- 閉じるアイコン -->
-                <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#confirmModal">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#confirm-modal">
                 </button>
             </div>
             <!-- 本文 -->
@@ -17,8 +17,8 @@
             <div class="modal-footer">
                 <div class="container-fluid">
                     <div class="row mb-3">
-                        <button class="btn btn-danger col me-2" data-bs-toggle="modal" data-bs-target="#confirmModal" type="button" onclick="return submit();">削除</button>
-                        <button class="btn btn-secondary col ms-2" data-bs-dismiss="modal" data-bs-target="#confirmModal" type="button">閉じる</button>
+                        <button class="btn btn-danger col me-2" data-bs-toggle="modal" data-bs-target="#confirm-modal" type="button" onclick="return submit();">削除</button>
+                        <button class="btn btn-secondary col ms-2" data-bs-dismiss="modal" data-bs-target="#confirm-modal" type="button">閉じる</button>
                     </div>
                 </div>
             </div>

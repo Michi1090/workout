@@ -82,7 +82,7 @@ $path_users = './';
                             </div>
                             <div class="mb-3 d-grid gap-3">
                                 <a class="btn btn-secondary" href="my_page.php">戻る</a>
-                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal" type="button">削除</button>
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirm-modal" type="button">削除</button>
                             </div>
                             <!-- 確認用モーダル -->
                             <?php require_once('delete_confirm_modal.php') ?>

@@ -106,6 +106,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // ヘッダーのパス指定
 $path_logs = './';
 $path_users = '../users/';
+$current_index = 'set';
 ?>
 
 
@@ -119,65 +120,48 @@ $path_users = '../users/';
     <?php require_once('../header.php') ?>
 
     <main>
-        <h2><?= escape($message) ?></h2>
+        <div class="container">
+            <div class="justify-content-center">
 
-        <!-- 検索フォーム -->
-        <form method="get">
-            <div>
-                <label for="date">日付</label>
-                <input type="date" name="date" max="9999-12-31" id="date" value="<?= escape($date) ?>">
-            </div>
-            <div>
-                <label for="part">部位</label>
-                <select name="part" id="part">
-                    <option value="">--</option>
-                    <?php foreach ($form_parts as $form_part) : ?>
-                        <!-- 検索で入力された値とする場合、selected属性を付加する -->
-                        <option <?= $form_part === $part ? 'selected' : '' ?>><?= escape($form_part) ?></option>
-                    <?php endforeach ?>
-                </select>
-            </div>
-            <div>
-                <label for="machine">マシン</label>
-                <input type="text" name="machine" value="<?= escape($machine) ?>">
-            </div>
-            <input type="submit" value="検索">
-            <input type="button" value="クリア" onclick="location.href='index.php'">
-        </form>
+                <!-- 検索用モーダル -->
+                <?php require_once('search_modal.php') ?>
 
-        <!-- 筋トレログ表示 -->
-        <div>
-            <?php if (!empty($result)) : ?>
-                <table>
-                    <tr>
-                        <th>日付</th>
-                        <th>部位</th>
-                        <th>マシン</th>
-                        <th>重量</th>
-                        <th>回数</th>
-                        <th>セット</th>
-                        <th>負荷</th>
-                        <th>メモ</th>
-                    </tr>
+                <!-- 筋トレログ表示 -->
+                <?php if (!empty($result)) : ?>
                     <?php foreach ($result as $log) : ?>
-                        <tr>
-                            <?php $id = $log['id']; ?>
-                            <td><?= escape($log['date']) ?></td>
-                            <td><?= escape($log['part']) ?></td>
-                            <td><?= escape($log['machine']) ?></td>
-                            <td><?= escape($log['weight']) . ' kg' ?></td>
-                            <td><?= escape($log['time']) . ' 回' ?></td>
-                            <td><?= escape($log['set_count']) . ' set' ?></td>
-                            <td><?= escape($log['work_load']) ?></td>
-                            <td> <?= escape($log['note']) ?></td>
-                            <td><a href="edit.php?id=<?= $id ?>">編集</a></td>
-                            <td><a href="delete.php?id=<?= $id ?>">削除</a></td>
-                        </tr>
+                        <!-- カード -->
+                        <div class="card my-4">
+                            <!-- カードヘッダー -->
+                            <div class="card-header bg-warning">
+                                <div class="row">
+                                    <h5 class="col my-2"><?= escape($log['machine']) ?></h5>
+                                    <div class="col text-end">
+                                        <?php $id = $log['id']; ?>
+                                        <a class="btn btn-success" href="edit.php?id=<?= escape($id) ?>">編集</a>
+                                        <a class="btn btn-danger" href="delete.php?id=<?= escape($id) ?>">削除</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <p class="col">日付 : <?= escape($log['date']) ?></p>
+                                    <p class="col">部位 : <?= escape($log['part']) ?></p>
+                                </div>
+                                <div class="row">
+                                    <p class="col-5"><?= escape($log['weight']) . ' kg' ?></p>
+                                    <p class="col-3"><?= escape($log['time']) . ' 回' ?></p>
+                                    <p class="col-1">×</p>
+                                    <p class="col-3"><?= escape($log['set_count']) . ' set' ?></p>
+                                </div>
+                                <p>負荷 : <?= escape($log['work_load']) ?></p>
+                                <p>メモ : <?= escape($log['note']) ?></p>
+                            </div>
+                        </div>
                     <?php endforeach ?>
-                </table>
-            <?php else : ?>
-                <p>該当する筋トレログはありません</p>
-            <?php endif ?>
+                <?php else : ?>
+                    <p>該当する筋トレログはありません</p>
+                <?php endif ?>
+            </div>
         </div>
 
         <!-- ページネーション -->
@@ -199,7 +183,7 @@ $path_users = '../users/';
                         <span class="page-link">&lt; 前ページ</span>
                     </li>
                 <?php endif ?>
-                <!-- 進む -->
+                <!-- 進むボタン -->
                 <?php if ($page < $max_page) : ?>
                     <li class="page-item">
                         <a class="page-link" href="index.php?page=<?= escape(($page + 1) . $search_conditions) ?>">次ページ &gt;</a>
