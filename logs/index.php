@@ -197,7 +197,7 @@ $current_index = 'set';
                     <!-- 該当ログなしの場合  -->
                 <?php else : ?>
                     <h6>※該当する筋トレログが存在しません</h6>
-                    <a href="index.php">トレーニングログ一覧へ</a>
+                    <a href="create.php">新規トレーニングログ作成</a>
                 <?php endif ?>
             </div>
         </div>
