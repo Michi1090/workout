@@ -83,7 +83,7 @@ $path_users = '../users/';
                     <!-- カードボディ -->
                     <div class="card-body">
                         <p class="mb-3"><?= escape($message) ?></p>
-                        <!-- 入力フォーム -->
+                        <!-- 登録フォーム -->
                         <form method="post">
                             <div class="row mb-3">
                                 <label class="form-label col-3 col-form-label" for="date">日付</label>
@@ -109,19 +109,19 @@ $path_users = '../users/';
                             <div class="row mb-3">
                                 <label class="form-label col-3 col-form-label" for="weight">重量</label>
                                 <div class="col-7"><input class="form-control" type="number" name="weight" id="weight" step="0.1" min="0" max="999.9" value="0.0"></div>
-                                <p class="col-2">kg</p>
+                                <label class="form-label col-2 col-form-label" for="weight">kg</label>
                                 <p class="text-danger small mb-0"><?= isset($errors['weight']) ? escape($errors['weight']) : '' ?></p>
                             </div>
                             <div class="row mb-3">
                                 <label class="form-label col-3 col-form-label" for="time">回数</label>
                                 <div class="col-7"><input class="form-control" type="number" name="time" id="time" min="0" max="99" value="0"></div>
-                                <p class="col-2">回</p>
+                                <label class="form-label col-2 col-form-label" for="time">回</label>
                                 <p class="text-danger small mb-0"><?= isset($errors['time']) ? escape($errors['time']) : '' ?></p>
                             </div>
                             <div class="row mb-3">
                                 <label class="form-label col-3 col-form-label" for="set_count">セット</label>
                                 <div class="col-7"><input class="form-control" type="number" name="set_count" id="set_count" min="0" max="99" value="0"></div>
-                                <p class="col-2">set</p>
+                                <label class="form-label col-2 col-form-label" for="set_count">set</label>
                                 <p class="text-danger small mb-0"><?= isset($errors['set_count']) ? escape($errors['set_count']) : '' ?></p>
                             </div>
                             <div class="row mb-3">
