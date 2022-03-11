@@ -17,6 +17,12 @@ if (isset($_SESSION['id'])) {
     exit;
 }
 
+// 対象の筋トレログを取得
+$sql = 'SELECT date, part, machine, weight, time, set_count, work_load, note FROM weight_logs WHERE id = :id';
+$stmt = $pdo->prepare($sql);
+$stmt->bindValue(':id', $id, PDO::PARAM_INT);
+$stmt->execute();
+
 // フォームから値が入力された場合
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // フォームの入力値を代入
@@ -48,15 +54,45 @@ $path_users = '../users/';
     <!-- header 読み込み -->
     <?php require_once('../header.php') ?>
 
-    <h2>トレーニングログ削除</h2>
-    <p>選択したログを削除します。よろしいですか？</p>
+    <main>
+        <div class="container">
+            <div class="justify-content-center">
+                <!-- カード -->
+                <div class="card">
+                    <!-- カードヘッダー -->
+                    <div class="card-header">
+                        <h1 class="text-center my-2">トレーニングログ削除</h1>
+                    </div>
+                    <!-- カードボディ -->
+                    <div class="card-body">
+                        <p class="mb-2">このトレーニングログを削除します。よろしいですか？</p>
+                        <!-- 削除内容 -->
+                        <div class="border-top border-bottom py-2">
+                            <?php foreach ($stmt as $log) : ?>
+                                <p class="mb-2">日付 : <?= escape($log['date']) ?></p>
+                                <p class="mb-2">部位 : <?= escape($log['part']) ?></p>
+                                <p class="mb-2">マシン : <?= escape($log['machine']) ?></p>
+                                <p class="mb-2">重量 : <?= escape($log['weight']) ?> kg</p>
+                                <p class="mb-2">回数 : <?= escape($log['time']) ?> 回</p>
+                                <p class="mb-2">セット : <?= escape($log['set_count']) ?> set</p>
+                                <p class="mb-2">負荷 : <?= escape($log['work_load']) ?></p>
+                                <p class="mb-0">メモ : <?= escape($log['note']) ?></p>
+                            <?php endforeach ?>
+                        </div>
 
-    <!-- 削除フォーム -->
-    <form method="post">
-        <input type="hidden" name="id" value="<?= escape($id) ?>">
-        <input type="button" value="戻る" onclick="location.href='index.php'">
-        <input type="submit" value="削除">
-    </form>
+                        <!-- 削除フォーム -->
+                        <form class="mt-3" method="post">
+                            <input type="hidden" name="id" value="<?= escape($id) ?>">
+                            <div class="d-grid gap-3">
+                                <a class="btn btn-secondary" href="index.php">戻る</a>
+                                <button class="btn btn-danger" type="submit">削除</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <script src="../js/bootstrap.bundle.min.js"></script><!-- Bootstrap -->
 </body>

@@ -141,15 +141,14 @@ $current_index = 'set';
                                 <p class="mb-2">日付 : <?= escape($log['date']) ?></p>
                                 <div class="row mb-2">
                                     <p class="col mb-0">部位 : <?= escape($log['part']) ?></p>
-                                    <p class="col mb-0">重量 : <?= escape($log['weight']) . ' kg' ?></p>
+                                    <p class="col mb-0">重量 : <?= escape($log['weight']) ?> kg</p>
                                 </div>
                                 <div class="row mb-2">
-                                    <p class="col mb-0">回数 : <?= escape($log['time']) . ' 回' ?></p>
-                                    <p class="col mb-0">セット : <?= escape($log['set_count']) . ' set' ?></p>
+                                    <p class="col mb-0">回数 : <?= escape($log['time']) ?> 回</p>
+                                    <p class="col mb-0">セット : <?= escape($log['set_count']) ?> set</p>
                                 </div>
                                 <p class="mb-2">負荷 : <?= escape($log['work_load']) ?></p>
                                 <p class="mb-0">メモ : <?= escape($log['note']) ?></p>
-
                             </div>
                         </div>
                     <?php endforeach ?>
