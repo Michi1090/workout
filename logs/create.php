@@ -71,64 +71,86 @@ $path_users = '../users/';
     <!-- header 読み込み -->
     <?php require_once('../header.php') ?>
 
-    <h2>新規トレーニングログ作成</h2>
-    <p><?= escape($message) ?></p>
-
-    <!-- 登録フォーム -->
-    <form method="post">
-        <div>
-            <label for="date">日付</label>
-            <input type="date" name="date" max="9999-12-31" id="date" required>
-            <p style="color: red;"><?= isset($errors['date']) ? escape($errors['date']) : '' ?></p>
+    <main>
+        <div class="container">
+            <div class="justify-content-center">
+                <!-- カード -->
+                <div class="card mb-2">
+                    <!-- カードヘッダー -->
+                    <div class="card-header">
+                        <h1 class="text-center my-2">トレーニングログ登録</h1>
+                    </div>
+                    <!-- カードボディ -->
+                    <div class="card-body">
+                        <p class="mb-3"><?= escape($message) ?></p>
+                        <!-- 入力フォーム -->
+                        <form method="post">
+                            <div class="row mb-3">
+                                <label class="form-label col-3 col-form-label" for="date">日付</label>
+                                <div class="col-9"><input class="form-control" type="date" name="date" max="9999-12-31" id="date" required></div>
+                                <p class="text-danger small mb-0"><?= isset($errors['date']) ? escape($errors['date']) : '' ?></p>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="form-label col-3 col-form-label" for="part">部位</label>
+                                <div class="col-9">
+                                    <select class="form-select" name="part" id="part" required>
+                                        <?php foreach ($form_parts as $form_part) : ?>
+                                            <option><?= escape($form_part) ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                                <p class="text-danger small mb-0"><?= isset($errors['part']) ? escape($errors['part']) : '' ?></p>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="form-label col-3 col-form-label" for="machine">マシン</label>
+                                <div class="col-9"><input class="form-control" type="text" name="machine" id="machine" maxlength="20" required></div>
+                                <p class="text-danger small mb-0"><?= isset($errors['machine']) ? escape($errors['machine']) : '' ?></p>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="form-label col-3 col-form-label" for="weight">重量</label>
+                                <div class="col-7"><input class="form-control" type="number" name="weight" id="weight" step="0.1" min="0" max="999.9" value="0.0"></div>
+                                <p class="col-2">kg</p>
+                                <p class="text-danger small mb-0"><?= isset($errors['weight']) ? escape($errors['weight']) : '' ?></p>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="form-label col-3 col-form-label" for="time">回数</label>
+                                <div class="col-7"><input class="form-control" type="number" name="time" id="time" min="0" max="99" value="0"></div>
+                                <p class="col-2">回</p>
+                                <p class="text-danger small mb-0"><?= isset($errors['time']) ? escape($errors['time']) : '' ?></p>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="form-label col-3 col-form-label" for="set_count">セット</label>
+                                <div class="col-7"><input class="form-control" type="number" name="set_count" id="set_count" min="0" max="99" value="0"></div>
+                                <p class="col-2">set</p>
+                                <p class="text-danger small mb-0"><?= isset($errors['set_count']) ? escape($errors['set_count']) : '' ?></p>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="form-label col-3 col-form-label" for="work_load">負荷</label>
+                                <div class="col-9">
+                                    <select class="form-select" name="work_load" id="work_load">
+                                        <option value="">--</option>
+                                        <?php foreach ($form_loads as $form_load) : ?>
+                                            <option><?= escape($form_load) ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                                <p class="text-danger small mb-0"><?= isset($errors['work_load']) ? escape($errors['work_load']) : '' ?></p>
+                            </div>
+                            <div class="row mb-4">
+                                <label class="form-label col-3 col-form-label" for="note">メモ</label>
+                                <div class="col-9"><input class="form-control" type="text" name="note" id="note" size="50" maxlength="30"></div>
+                                <p class="text-danger small mb-0"><?= isset($errors['note']) ? escape($errors['note']) : '' ?></p>
+                            </div>
+                            <div class="d-grid gap-3">
+                                <button class="btn btn-warning" type="submit">登録</button>
+                                <a class="btn btn-secondary" href="index.php">戻る</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-            <label for="part">部位</label>
-            <select name="part" id="part" required>
-                <?php foreach ($form_parts as $form_part) : ?>
-                    <option><?= escape($form_part) ?></option>
-                <?php endforeach ?>
-            </select>
-            <p style="color: red;"><?= isset($errors['part']) ? escape($errors['part']) : '' ?></p>
-        </div>
-        <div>
-            <label for="machine">マシン</label>
-            <input type="text" name="machine" id="machine" required>
-            <p style="color: red;"><?= isset($errors['machine']) ? escape($errors['machine']) : '' ?></p>
-        </div>
-        <div>
-            <label for="weight">重量</label>
-            <input type="number" name="weight" id="weight" step="0.1" min="0" max="999.9" value="0"> kg
-            <p style="color: red;"><?= isset($errors['weight']) ? escape($errors['weight']) : '' ?></p>
-        </div>
-        <div>
-            <label for="time">回数</label>
-            <input type="number" name="time" id="time" min="0" max="99" value="0"> 回
-            <p style="color: red;"><?= isset($errors['time']) ? escape($errors['time']) : '' ?></p>
-
-        </div>
-        <div>
-            <label for="set_count">セット</label>
-            <input type="number" name="set_count" id="set_count" min="0" max="99" value="0"> set
-            <p style="color: red;"><?= isset($errors['set_count']) ? escape($errors['set_count']) : '' ?></p>
-        </div>
-        <div>
-            <label for="work_load">負荷</label>
-            <select name="work_load" id="work_load">
-                <option value="">--</option>
-                <?php foreach ($form_loads as $form_load) : ?>
-                    <option><?= escape($form_load) ?></option>
-                <?php endforeach ?>
-            </select>
-            <p style="color: red;"><?= isset($errors['work_load']) ? escape($errors['work_load']) : '' ?></p>
-        </div>
-        <div>
-            <label for="note">メモ</label>
-            <input type="text" name="note" id="note" size="50" maxlength="30">
-            <p style="color: red;"><?= isset($errors['note']) ? escape($errors['note']) : '' ?></p>
-        </div>
-        <input type="submit" value="登録">
-        <input type="button" value="戻る" onclick="location.href='index.php'">
-    </form>
+    </main>
 
     <script src="../js/bootstrap.bundle.min.js"></script><!-- Bootstrap -->
     <script src="../js/date.js"></script><!-- 日付のデフォルト値 -->

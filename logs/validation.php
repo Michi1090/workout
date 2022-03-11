@@ -22,7 +22,7 @@ if (!empty($time) && !preg_match('/^[0-9]{1,2}$/', $time)) {
 }
 // セット
 if (!empty($set_count) && !preg_match('/^[0-9]{1,2}$/', $set_count)) {
-    $errors['set_count'] = '※SETは0～99回で登録してください';
+    $errors['set_count'] = '※セットは0～99回で登録してください';
 }
 // 負荷
 if (!empty($work_load) && !in_array($work_load, $form_loads, true)) {

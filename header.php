@@ -7,7 +7,7 @@
 ================================================================================================  -->
 
 <header>
-    <nav class="navbar navbar-expand navbar-light bg-warning mb-5">
+    <nav class="navbar navbar-expand navbar-light bg-warning mb-4">
         <div class=container-fluid>
             <a class="navbar-brand site-logo" href="<?= escape($path_logs) ?>index.php">
                 <i class="fa-solid fa-dumbbell me-1"></i>My Workout
@@ -24,7 +24,7 @@
                         <div class="dropdown-menu dropdown-menu-end">
                             <!-- ログイン状態によってメニュー内容を切り替える -->
                             <?php if (isset($_SESSION['id'])) : ?>
-                                <a class="dropdown-item" href="<?= escape($path_logs) ?>create.php">トレーニングログ作成</a>
+                                <a class="dropdown-item" href="<?= escape($path_logs) ?>create.php">トレーニングログ登録</a>
                                 <a class="dropdown-item" href="<?= escape($path_users) ?>my_page.php">マイページ</a>
                                 <a class="dropdown-item" href="<?= escape($path_users) ?>logout.php">ログアウト</a>
                             <?php else : ?>

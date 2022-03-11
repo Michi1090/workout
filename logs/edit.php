@@ -101,7 +101,7 @@ $path_users = '../users/';
         </div>
         <div>
             <label for="machine">マシン</label>
-            <input type="text" name="machine" id="machine" value="<?= escape($result['machine']) ?>" required>
+            <input type="text" name="machine" id="machine" maxlength="20" value="<?= escape($result['machine']) ?>" required>
             <p style="color: red;"><?= isset($errors['machine']) ? escape($errors['machine']) : '' ?></p>
         </div>
         <div>
