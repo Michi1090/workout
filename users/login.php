@@ -27,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$stmt->execute();
 	$result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-	// if ($result !== false) {
 	if (!empty($result)) {
 		// レコード取得に成功（ユーザー登録あり）した場合、パスワードチェックを行う
 		if (password_verify($pass, $result['password'])) {
