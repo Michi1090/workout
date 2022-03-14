@@ -43,7 +43,7 @@ $path_users = './';
                     <!-- カードボディ -->
                     <div class="card-body">
                         <div class="mb-4">
-                            <h2 class="fs-5 mb-3"><i class="fas fa-user me-2"></i>ユーザー名 : <?= $name ?></h2>
+                            <h2 class="fs-5 mb-3"><i class="fas fa-user me-2"></i>ユーザー名 : <?= escape($name) ?></h2>
                             <p class="mb-0">こちらのページからパスワードの変更とユーザー登録の削除が行えます。</p>
                         </div>
                         <div class="d-grid gap-3">

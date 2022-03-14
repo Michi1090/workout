@@ -16,7 +16,7 @@
             <!-- フッター -->
             <div class="modal-footer">
                 <div class="container-fluid">
-                    <div class="row mb-3">
+                    <div class="row my-2">
                         <button class="btn btn-danger col me-2" type="button" onclick="return submit();">削除</button>
                         <button class="btn btn-secondary col ms-2" data-bs-dismiss="modal" data-bs-target="#confirm-modal" type="button">閉じる</button>
                     </div>

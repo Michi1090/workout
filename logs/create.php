@@ -86,12 +86,12 @@ $path_users = '../users/';
                         <!-- 登録フォーム -->
                         <form method="post">
                             <div class="row mb-3">
-                                <label class="form-label col-3 col-form-label" for="date">日付</label>
+                                <label class="col-form-label col-3" for="date">日付</label>
                                 <div class="col-9"><input class="form-control" type="date" name="date" max="9999-12-31" id="date" required></div>
                                 <p class="text-danger small mb-0"><?= isset($errors['date']) ? escape($errors['date']) : '' ?></p>
                             </div>
                             <div class="row mb-3">
-                                <label class="form-label col-3 col-form-label" for="part">部位</label>
+                                <label class="col-form-label col-3" for="part">部位</label>
                                 <div class="col-9">
                                     <select class="form-select" name="part" id="part" required>
                                         <?php foreach ($form_parts as $form_part) : ?>
@@ -102,30 +102,30 @@ $path_users = '../users/';
                                 <p class="text-danger small mb-0"><?= isset($errors['part']) ? escape($errors['part']) : '' ?></p>
                             </div>
                             <div class="row mb-3">
-                                <label class="form-label col-3 col-form-label" for="machine">マシン</label>
+                                <label class="col-form-label col-3" for="machine">マシン</label>
                                 <div class="col-9"><input class="form-control" type="text" name="machine" id="machine" maxlength="20" required></div>
                                 <p class="text-danger small mb-0"><?= isset($errors['machine']) ? escape($errors['machine']) : '' ?></p>
                             </div>
                             <div class="row mb-3">
-                                <label class="form-label col-3 col-form-label" for="weight">重量</label>
+                                <label class="col-form-label col-3" for="weight">重量</label>
                                 <div class="col-7"><input class="form-control" type="number" name="weight" id="weight" step="0.1" min="0" max="999.9" value="0.0"></div>
-                                <label class="form-label col-2 col-form-label" for="weight">kg</label>
+                                <label class="col-form-label col-2" for="weight">kg</label>
                                 <p class="text-danger small mb-0"><?= isset($errors['weight']) ? escape($errors['weight']) : '' ?></p>
                             </div>
                             <div class="row mb-3">
-                                <label class="form-label col-3 col-form-label" for="time">回数</label>
+                                <label class="col-form-label col-3" for="time">回数</label>
                                 <div class="col-7"><input class="form-control" type="number" name="time" id="time" min="0" max="99" value="0"></div>
-                                <label class="form-label col-2 col-form-label" for="time">回</label>
+                                <label class="col-form-label col-2" for="time">回</label>
                                 <p class="text-danger small mb-0"><?= isset($errors['time']) ? escape($errors['time']) : '' ?></p>
                             </div>
                             <div class="row mb-3">
-                                <label class="form-label col-3 col-form-label" for="set_count">セット</label>
+                                <label class="col-form-label col-3" for="set_count">セット</label>
                                 <div class="col-7"><input class="form-control" type="number" name="set_count" id="set_count" min="0" max="99" value="0"></div>
-                                <label class="form-label col-2 col-form-label" for="set_count">set</label>
+                                <label class="col-form-label col-2" for="set_count">set</label>
                                 <p class="text-danger small mb-0"><?= isset($errors['set_count']) ? escape($errors['set_count']) : '' ?></p>
                             </div>
                             <div class="row mb-3">
-                                <label class="form-label col-3 col-form-label" for="work_load">負荷</label>
+                                <label class="col-form-label col-3" for="work_load">負荷</label>
                                 <div class="col-9">
                                     <select class="form-select" name="work_load" id="work_load">
                                         <option value="">--</option>
@@ -137,7 +137,7 @@ $path_users = '../users/';
                                 <p class="text-danger small mb-0"><?= isset($errors['work_load']) ? escape($errors['work_load']) : '' ?></p>
                             </div>
                             <div class="row mb-4">
-                                <label class="form-label col-3 col-form-label" for="note">メモ</label>
+                                <label class="col-form-label col-3" for="note">メモ</label>
                                 <div class="col-9"><input class="form-control" type="text" name="note" id="note" size="50" maxlength="30"></div>
                                 <p class="text-danger small mb-0"><?= isset($errors['note']) ? escape($errors['note']) : '' ?></p>
                             </div>

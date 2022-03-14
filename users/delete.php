@@ -72,11 +72,11 @@ $path_users = './';
                     </div>
                     <!-- カードボディ -->
                     <div class="card-body">
-                        <p class="mb-2">ユーザー登録を削除するには、パスワードを入力して「削除」ボタンを押してください</p>
+                        <p class="mb-3">ユーザー登録を削除するには、パスワードを入力して「削除」ボタンを押してください</p>
                         <!-- 入力フォーム -->
                         <form method="post" onsubmit="return false;">
                             <div class="mb-4">
-                                <label class="col-form-label" for="pass">パスワード</label>
+                                <label class="form-label" for="pass">パスワード</label>
                                 <input class="form-control" type="password" name="pass" id="pass" required>
                                 <p class="text-danger small mb-0"><?= isset($error) ? escape($error) : '' ?></p>
                             </div>
