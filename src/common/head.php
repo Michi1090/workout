@@ -20,8 +20,8 @@
     <!-- CSS
     =============================================================================================================================== -->
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&family=Patua+One&family=Philosopher&display=swap" rel="stylesheet"><!-- Google Fonts -->
-    <link rel="stylesheet" href="../css/bootstrap.min.css"><!-- Bootstrap -->
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="<?= escape($path['root']) ?>css/bootstrap.min.css"><!-- Bootstrap -->
+    <link rel="stylesheet" href="<?= escape($path['root']) ?>css/style.css">
 
     <!-- JavaScript
     =============================================================================================================================== -->
