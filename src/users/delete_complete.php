@@ -2,6 +2,9 @@
 ================================================================================================  -->
 <?php
 
+require_once('../common/sanitize.php');
+require_once('../common/path.php');
+
 // セッション接続
 session_start();
 
@@ -11,24 +14,24 @@ if ($_SESSION['flag']) {
     session_destroy();
 } else {
     // フラグがない（削除ページ以外からアクセスした）場合、インデックスページへリダイレクト
-    header('Location: ../logs/index.php');
+    header('Location: ../index.php');
     exit;
 }
 
 // ヘッダーのパス指定
-$path_logs = '../logs/';
-$path_users = './';
+$path = currentUsers();
+
 ?>
 
 
 <!--  ビュー
 ================================================================================================  -->
 <!-- head 読み込み -->
-<?php require_once('../head.php') ?>
+<?php require_once('../common/head.php') ?>
 
 <body>
     <!-- header 読み込み -->
-    <?php require_once('../header.php') ?>
+    <?php require_once('../common/header.php') ?>
 
     <main>
         <div class="container">

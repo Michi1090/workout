@@ -2,7 +2,8 @@
 ================================================================================================  -->
 <?php
 
-require_once('../sanitize.php');
+require_once('../common/sanitize.php');
+require_once('../common/path.php');
 
 // セッションの開始
 session_start();
@@ -17,19 +18,19 @@ if (isset($_SESSION['id'])) {
 }
 
 // ヘッダーのパス指定
-$path_logs = '../logs/';
-$path_users = './';
+$path = currentUsers();
+
 ?>
 
 
 <!--  ビュー
 ================================================================================================  -->
 <!-- head 読み込み -->
-<?php require_once('../head.php') ?>
+<?php require_once('../common//head.php') ?>
 
 <body>
     <!-- header 読み込み -->
-    <?php require_once('../header.php') ?>
+    <?php require_once('../common/header.php') ?>
 
     <main>
         <div class="container">
@@ -47,7 +48,7 @@ $path_users = './';
                             <p class="mb-0">こちらのページからパスワードの変更とユーザー登録の削除が行えます。</p>
                         </div>
                         <div class="d-grid gap-3">
-                            <a class="btn btn-warning" href="../logs/index.php">トレーニングログ一覧</a>
+                            <a class="btn btn-warning" href="../index.php">トレーニングログ一覧</a>
                             <a class="btn btn-success" href="change_password.php">パスワード変更</a>
                             <a class="btn btn-danger" href="delete.php">ユーザー登録削除</a>
                         </div>

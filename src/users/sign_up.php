@@ -2,15 +2,16 @@
 ================================================================================================  -->
 <?php
 
-require_once('../db_connect.php');
-require_once('../sanitize.php');
+require_once('../common/db_connect.php');
+require_once('../common/sanitize.php');
+require_once('../common/path.php');
 
 // セッションの開始
 session_start();
 
 // ログイン済みの場合、マイページへリダイレクト
 if (isset($_SESSION['id'])) {
-    header('Location: ../logs/index.php');
+    header('Location: ../index.php');
     exit;
 }
 
@@ -72,25 +73,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['name'] = $result['name'];
 
         // インデックスページへリダイレクト
-        header('Location: ../logs/index.php');
+        header('Location: ../index.php');
         exit;
     }
 }
 
 // ヘッダーのパス指定
-$path_logs = '../logs/';
-$path_users = './';
+$path = currentUsers();
 ?>
 
 
 <!--  ビュー
 ================================================================================================  -->
 <!-- head 読み込み -->
-<?php require_once('../head.php') ?>
+<?php require_once('../common//head.php') ?>
 
 <body>
     <!-- header 読み込み -->
-    <?php require_once('../header.php') ?>
+    <?php require_once('../common/header.php') ?>
 
     <main>
         <div class="container">

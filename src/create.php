@@ -2,8 +2,10 @@
 ================================================================================================  -->
 <?php
 
-require_once('../db_connect.php');
-require_once('../sanitize.php');
+require_once('common/db_connect.php');
+require_once('common/sanitize.php');
+require_once('common/select_box.php');
+require_once('common/path.php');
 
 // セッションの開始
 session_start();
@@ -14,12 +16,9 @@ if (isset($_SESSION['id'])) {
     $message = '';
 } else {
     // ログアウト状態のとき、ログインページへリダイレクトする
-    header('Location: ../users/login.php');
+    header('Location: users/login.php');
     exit;
 }
-
-// セレクトボックスの値
-require_once('select_box.php');
 
 // フォームから値が入力された場合
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -34,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $note = $_POST['note'];
 
     // バリデーション
-    require_once('validation.php');
+    require_once('common/validation.php');
 
     // バリデーションクリア（エラーメッセージなし）の場合
     if (empty($errors)) {
@@ -57,19 +56,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // ヘッダーのパス指定
-$path_logs = './';
-$path_users = '../users/';
+$path = currentRoot();
 ?>
 
 
 <!--  ビュー
 ================================================================================================  -->
 <!-- head 読み込み -->
-<?php require_once('../head.php') ?>
+<?php require_once('common/head.php') ?>
 
 <body>
     <!-- header 読み込み -->
-    <?php require_once('../header.php') ?>
+    <?php require_once('common/header.php') ?>
 
     <main>
         <div class="container">
@@ -82,7 +80,7 @@ $path_users = '../users/';
                     </div>
                     <!-- カードボディ -->
                     <div class="card-body">
-                        <p class="mb-3"><?= escape($message) ?></p>
+                        <p class="text-danger mb-3"><?= escape($message) ?></p>
                         <!-- 登録フォーム -->
                         <form method="post">
                             <div class="row mb-3">
@@ -152,8 +150,8 @@ $path_users = '../users/';
         </div>
     </main>
 
-    <script src="../js/bootstrap.bundle.min.js"></script><!-- Bootstrap -->
-    <script src="../js/date.js"></script><!-- 日付のデフォルト値 -->
+    <script src="js/bootstrap.bundle.min.js"></script><!-- Bootstrap -->
+    <script src="js/date.js"></script><!-- 日付のデフォルト値 -->
 </body>
 
 </html>

@@ -2,8 +2,10 @@
 ================================================================================================  -->
 <?php
 
-require_once('../db_connect.php');
-require_once('../sanitize.php');
+require_once('common/db_connect.php');
+require_once('common/sanitize.php');
+require_once('common/select_box.php');
+require_once('common/path.php');
 
 // セッションの開始
 session_start();
@@ -13,12 +15,9 @@ if (isset($_SESSION['id'])) {
     $user_id = $_SESSION['id'];
 } else {
     // ログアウト状態のとき、ログインページへリダイレクトする
-    header('Location: ../users/login.php');
+    header('Location: users/login.php');
     exit;
 }
-
-// セレクトボックスの値
-require_once('select_box.php');
 
 // 検索条件の値を代入
 $date = filter_input(INPUT_GET, 'date');
@@ -99,20 +98,18 @@ $stmt->execute();
 $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // ヘッダーのパス指定
-$path_logs = './';
-$path_users = '../users/';
-$current_index = 'set';
+$path = currentIndex();
 ?>
 
 
 <!--  ビュー
 ================================================================================================  -->
 <!-- head 読み込み -->
-<?php require_once('../head.php') ?>
+<?php require_once('common/head.php') ?>
 
 <body>
     <!-- header 読み込み -->
-    <?php require_once('../header.php') ?>
+    <?php require_once('common/header.php') ?>
 
     <main>
         <div class="container">
@@ -202,8 +199,8 @@ $current_index = 'set';
         </div>
     </main>
 
-    <script src="../js/bootstrap.bundle.min.js"></script><!-- Bootstrap -->
-    <script src="../js/clear_conditions.js"></script><!-- 検索条件のクリア -->
+    <script src="js/bootstrap.bundle.min.js"></script><!-- Bootstrap -->
+    <script src="js/clear_conditions.js"></script><!-- 検索条件のクリア -->
 </body>
 
 </html>
