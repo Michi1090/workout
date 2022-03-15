@@ -1,0 +1,22 @@
+-- usersテーブルの作成
+CREATE TABLE users
+(
+    id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    name VARCHAR(30)  NOT NULL UNIQUE,
+    password VARCHAR(255) BINARY NOT NULL
+);
+
+-- weight_logsテーブルの作成
+CREATE TABLE weight_logs
+(
+    id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    user_id BIGINT UNSIGNED NOT NULL,
+    date DATE NOT NULL,
+    part VARCHAR(30) NOT NULL,
+    machine VARCHAR(30) NOT NULL,
+    weight SMALLINT UNSIGNED,
+    time TINYINT UNSIGNED,
+    set_count TINYINT UNSIGNED,
+    work_load VARCHAR(30),
+    note VARCHAR(40)
+);

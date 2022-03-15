@@ -40,7 +40,7 @@ if (!empty($machine)) {
 }
 
 //最大ページ数の取得
-$sql = 'SELECT COUNT(*) as cnt FROM weight_logs  WHERE user_id = :user_id' . $where;
+$sql = 'SELECT COUNT(*) as cnt FROM weight_logs WHERE user_id = :user_id' . $where;
 $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 if (!empty($date)) {
