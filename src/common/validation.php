@@ -10,7 +10,7 @@ if (!in_array($part, $form_parts, true)) {
     $errors['part'] = '※部位はセレクトボックスから選択してください';
 }
 // マシン
-if (mb_strlen($machine) < 1 || mb_strlen($machine, 'UTF-8') > 20) {
+if (mb_strlen($machine, 'UTF-8') < 1 || mb_strlen($machine, 'UTF-8') > 20) {
     $errors['machine'] = '※マシンは1～20文字で登録してください';
 }
 // 重量
