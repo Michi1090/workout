@@ -14,7 +14,7 @@ CREATE TABLE weight_logs
     date DATE NOT NULL,
     part VARCHAR(30) NOT NULL,
     machine VARCHAR(30) NOT NULL,
-    weight SMALLINT UNSIGNED,
+    weight DECIMAL(3, 1) UNSIGNED,
     time TINYINT UNSIGNED,
     set_count TINYINT UNSIGNED,
     work_load VARCHAR(30),
