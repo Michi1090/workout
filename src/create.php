@@ -101,24 +101,24 @@ $path = currentRoot();
                             </div>
                             <div class="row mb-3">
                                 <label class="col-form-label col-3" for="machine">マシン</label>
-                                <div class="col-9"><input class="form-control" type="text" name="machine" id="machine" maxlength="20" required></div>
+                                <div class="col-9"><input class="form-control" type="text" name="machine" id="machine" maxlength="20" placeholder="トレーニングマシンを入力" required></div>
                                 <p class="text-danger small mb-0"><?= isset($errors['machine']) ? escape($errors['machine']) : '' ?></p>
                             </div>
                             <div class="row mb-3">
                                 <label class="col-form-label col-3" for="weight">重量</label>
-                                <div class="col-7"><input class="form-control" type="number" name="weight" id="weight" step="0.1" min="0" max="999.9"></div>
+                                <div class="col-7"><input class="form-control" type="number" name="weight" id="weight" step="0.1" min="0" max="999.9" placeholder="0.0"></div>
                                 <label class="col-form-label col-2" for="weight">kg</label>
                                 <p class="text-danger small mb-0"><?= isset($errors['weight']) ? escape($errors['weight']) : '' ?></p>
                             </div>
                             <div class="row mb-3">
                                 <label class="col-form-label col-3" for="time">回数</label>
-                                <div class="col-7"><input class="form-control" type="number" name="time" id="time" min="0" max="99"></div>
+                                <div class="col-7"><input class="form-control" type="number" name="time" id="time" min="0" max="99" placeholder="0"></div>
                                 <label class="col-form-label col-2" for="time">回</label>
                                 <p class="text-danger small mb-0"><?= isset($errors['time']) ? escape($errors['time']) : '' ?></p>
                             </div>
                             <div class="row mb-3">
                                 <label class="col-form-label col-3" for="set_count">セット</label>
-                                <div class="col-7"><input class="form-control" type="number" name="set_count" id="set_count" min="0" max="99"></div>
+                                <div class="col-7"><input class="form-control" type="number" name="set_count" id="set_count" min="0" max="99" placeholder="0"></div>
                                 <label class="col-form-label col-2" for="set_count">set</label>
                                 <p class="text-danger small mb-0"><?= isset($errors['set_count']) ? escape($errors['set_count']) : '' ?></p>
                             </div>
