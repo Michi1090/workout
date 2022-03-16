@@ -106,19 +106,19 @@ $path = currentRoot();
                             </div>
                             <div class="row mb-3">
                                 <label class="col-form-label col-3" for="weight">重量</label>
-                                <div class="col-7"><input class="form-control" type="number" name="weight" id="weight" step="0.1" min="0" max="999.9" value="0.0"></div>
+                                <div class="col-7"><input class="form-control" type="number" name="weight" id="weight" step="0.1" min="0" max="999.9"></div>
                                 <label class="col-form-label col-2" for="weight">kg</label>
                                 <p class="text-danger small mb-0"><?= isset($errors['weight']) ? escape($errors['weight']) : '' ?></p>
                             </div>
                             <div class="row mb-3">
                                 <label class="col-form-label col-3" for="time">回数</label>
-                                <div class="col-7"><input class="form-control" type="number" name="time" id="time" min="0" max="99" value="0"></div>
+                                <div class="col-7"><input class="form-control" type="number" name="time" id="time" min="0" max="99"></div>
                                 <label class="col-form-label col-2" for="time">回</label>
                                 <p class="text-danger small mb-0"><?= isset($errors['time']) ? escape($errors['time']) : '' ?></p>
                             </div>
                             <div class="row mb-3">
                                 <label class="col-form-label col-3" for="set_count">セット</label>
-                                <div class="col-7"><input class="form-control" type="number" name="set_count" id="set_count" min="0" max="99" value="0"></div>
+                                <div class="col-7"><input class="form-control" type="number" name="set_count" id="set_count" min="0" max="99"></div>
                                 <label class="col-form-label col-2" for="set_count">set</label>
                                 <p class="text-danger small mb-0"><?= isset($errors['set_count']) ? escape($errors['set_count']) : '' ?></p>
                             </div>
