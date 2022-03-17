@@ -4,7 +4,9 @@ CREATE TABLE users
     id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
     name VARCHAR(30)  NOT NULL UNIQUE,
     password VARCHAR(255) BINARY NOT NULL
-);
+)
+CHARACTER SET
+utf8mb4;
 
 -- weight_logsテーブルの作成
 CREATE TABLE weight_logs
@@ -19,4 +21,6 @@ CREATE TABLE weight_logs
     set_count TINYINT UNSIGNED,
     work_load VARCHAR(30),
     note VARCHAR(40)
-);
+)
+CHARACTER SET
+utf8mb4;
