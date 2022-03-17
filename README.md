@@ -6,7 +6,7 @@
 ネイティブPHPとSQLへの理解を深めるため、バックエンドの処理はあえてフレームワークを一切使用せずにフルスクラッチで開発しました。
 
 ## 公開URL
-https://www.hogehoge.com  
+https://pure-garden-14346.herokuapp.com/ 
 ※Safari for iPhone推奨。PCからもご覧いただけますが、スマホ用の画面サイズになります。
 
 ## 制作時期
