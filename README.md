@@ -47,3 +47,6 @@ HTML, CSS, JavaScript, BootStrap, PHP, MySQL/MariaDB
 
 ### PHP + MySQLフルスクラッチでユーザー認証機能を実装する【ログイン・ログアウト編】 
 https://qiita.com/Michi1090/items/67db6a38bb63752237e7
+
+### PHP + MySQLフルスクラッチでユーザー認証機能を実装する【ユーザー登録編】
+https://qiita.com/Michi1090/items/efcc179103b1f452288b

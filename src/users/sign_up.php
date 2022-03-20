@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     /* バリデーション */
     // ユーザー名の重複
     if ($result['COUNT(*)'] == 1) {
-        $errors['name'] = '※このユーザー名は既に使用されています。';
+        $errors['name'] = '※このユーザー名は既に使用されています';
     }
     // ユーザー名の形式
     if (!preg_match('/^[a-zA-Z0-9]{1,20}$/', $name)) {
@@ -52,15 +52,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // パスワードの暗号化
         $hash_pass = password_hash($pass, PASSWORD_DEFAULT);
 
-        // 登録処理を行う
+        // ユーザー登録処理
         $sql = 'INSERT INTO users SET name = :name, password = :pass';
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':name', $name, PDO::PARAM_STR);
         $stmt->bindValue(':pass', $hash_pass, PDO::PARAM_STR);
         $stmt->execute();
-
-        // セッションIDを新しく生成（セッションハイジャック対策）
-        session_regenerate_id(true);
 
         // 登録に引き続き、ログイン処理を行う
         $sql = 'SELECT * FROM users WHERE name = :name and password = :pass';
@@ -69,6 +66,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bindValue(':pass', $hash_pass, PDO::PARAM_STR);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // セッションIDを新しく生成（セッションハイジャック対策）
+        session_regenerate_id(true);
+
+        // ログイン処理
         $_SESSION['id'] = $result['id'];
         $_SESSION['name'] = $result['name'];
 
