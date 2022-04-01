@@ -78,6 +78,7 @@ $path = currentUsers();
 					<div class="card-body">
 						<p class="mb-2">ユーザー名とパスワードを入力してください</p>
 						<p class="text-danger small mb-3"><?= isset($error) ? escape($error) : '' ?></p>
+						
 						<!-- 入力フォーム -->
 						<form method="post">
 							<div class="mb-3">
@@ -91,10 +92,20 @@ $path = currentUsers();
 							<div class="mb-3 d-grid">
 								<button class="btn btn-warning" type="submit">ログイン</button>
 							</div>
-							<div class="text-center">
-								<a href="sign_up.php">新規ユーザー登録はこちらから</a>
+						</form>
+
+						<!-- ゲストログイン用フォーム -->
+						<form method="post">
+							<input type="hidden" name="name" value="guest">
+							<input type="hidden" name="pass" value="123456Aa">
+							<div class="mb-3 d-grid">
+								<button class="btn btn-success" type="submit">ゲストログイン</button>
 							</div>
 						</form>
+
+						<div class="text-center">
+							<a href="sign_up.php">新規ユーザー登録はこちらから</a>
+						</div>
 					</div>
 				</div>
 			</div>

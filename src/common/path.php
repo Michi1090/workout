@@ -1,13 +1,17 @@
 <?php
 
-function currentIndex (){
+// 相対パスの指定
+function currentIndex()
+{
     return ['root' => './', 'users' => 'users/', 'index' => 'set'];
 }
 
-function currentRoot (){
+function currentRoot()
+{
     return ['root' => './', 'users' => 'users/'];
 }
 
-function currentUsers (){
+function currentUsers()
+{
     return ['root' => '../', 'users' => './'];
 }
