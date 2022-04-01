@@ -30,8 +30,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (password_verify($pass, $result['password'])) {
-        // パスワードが一致する場合、ユーザー登録と対象ユーザーに紐づくログを削除
+    /* バリデーション */
+    // パスワードのチェック
+    if (!password_verify($pass, $result['password'])) {
+        $error = '※パスワードが違います';
+    }
+
+    // ゲストアカウントのチェック
+    if ($id == 1) {
+        $error = '※ゲストアカウントは削除できません。';
+    }
+
+    // バリデーションクリア（エラーメッセージなし）の場合
+    if (empty($error)) {
+        // ユーザー登録と対象ユーザーに紐づくログを削除
         $sql = 'DELETE users, weight_logs FROM users LEFT JOIN weight_logs ON users.id = user_id WHERE users.id = :id';
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
@@ -41,9 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['flag'] = true;
         header('Location: delete_complete.php');
         exit;
-    } else {
-        // 入力されたパスワードが一致しない場合
-        $error = '※パスワードが違います';
     }
 }
 

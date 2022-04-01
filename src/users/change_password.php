@@ -33,9 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
     /* バリデーション */
-    // パスワードが一致するかチェック
+    // パスワードのチェック
     if (!password_verify($pass, $result['password'])) {
         $errors['pass'] = '※パスワードが違います';
+    }
+
+    // ゲストアカウントのチェック
+    if ($id == 1) {
+        $errors['pass'] = '※ゲストアカウントのパスワードは変更できません。';
     }
 
     // 新パスワードが形式通りかチェック
