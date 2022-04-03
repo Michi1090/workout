@@ -81,7 +81,7 @@ if ($page === $max_page && $count['cnt'] % 5 !== 0) {
 }
 
 // ページと検索条件に合致するトレーニングログを5件取得
-$sql = 'SELECT weight_logs.id, date, part, machine, weight, time, set_count, work_load, note FROM weight_logs JOIN users ON user_id = users.id WHERE user_id = :user_id' . $where . ' ORDER BY date DESC LIMIT :from, 5';
+$sql = 'SELECT weight_logs.id, date, part, machine, weight, time, set_count, work_load, note FROM weight_logs JOIN users ON user_id = users.id WHERE user_id = :user_id' . $where . ' ORDER BY date DESC, weight_logs.id DESC LIMIT :from, 5';
 $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 if (!empty($date)) {
