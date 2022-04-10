@@ -22,7 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$pass = $_POST['pass'];
 
 	// ユーザー名に合致するレコードを取得
-	$sql = 'SELECT * FROM users WHERE name = :name';
+	$sql = <<<EOD
+	SELECT *
+	FROM users
+	WHERE name = :name
+	EOD;
+	
 	$stmt = $pdo->prepare($sql);
 	$stmt->bindValue(':name', $name, PDO::PARAM_STR);
 	$stmt->execute();
@@ -78,7 +83,7 @@ $path = currentUsers();
 					<div class="card-body">
 						<p class="mb-2">ユーザー名とパスワードを入力してください</p>
 						<p class="text-danger small mb-3"><?= isset($error) ? escape($error) : '' ?></p>
-						
+
 						<!-- 入力フォーム -->
 						<form method="post">
 							<div class="mb-3">

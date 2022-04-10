@@ -20,7 +20,12 @@ if (isset($_SESSION['id'])) {
 }
 
 // 対象の筋トレログを取得
-$sql = 'SELECT date, part, machine, weight, time, set_count, work_load, note FROM weight_logs WHERE id = :id';
+$sql = <<<EOD
+SELECT date, part, machine, weight, time, set_count, work_load, note
+FROM weight_logs
+WHERE id = :id
+EOD;
+
 $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 $stmt->execute();
@@ -44,7 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // バリデーションクリア（エラーメッセージなし）の場合
     if (empty($errors)) {
         // 新規レコードを挿入
-        $sql = 'UPDATE weight_logs SET date = :date, part = :part, machine = :machine, weight = :weight, time = :time, set_count = :set_count, work_load = :work_load, note = :note WHERE id = :id';
+        $sql = <<<EOD
+        UPDATE weight_logs
+        SET date = :date, part = :part, machine = :machine, weight = :weight, time = :time, set_count = :set_count, work_load = :work_load, note = :note
+        WHERE id = :id
+        EOD;
+
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':date', $date, PDO::PARAM_STR);
         $stmt->bindValue(':part', $part, PDO::PARAM_STR);

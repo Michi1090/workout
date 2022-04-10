@@ -24,7 +24,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pass = $_POST['pass'];
 
     // ログインユーザーのパスワードを取得
-    $sql = 'SELECT password FROM users WHERE id = :id';
+    $sql = <<<EOD
+    SELECT password
+    FROM users
+    WHERE id = :id
+    EOD;
+
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
@@ -44,7 +49,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // バリデーションクリア（エラーメッセージなし）の場合
     if (empty($error)) {
         // ユーザー登録と対象ユーザーに紐づくログを削除
-        $sql = 'DELETE users, weight_logs FROM users LEFT JOIN weight_logs ON users.id = user_id WHERE users.id = :id';
+        $sql = <<<EOD
+        DELETE users, weight_logs
+        FROM users
+        LEFT JOIN weight_logs
+        ON users.id = user_id
+        WHERE users.id = :id
+        EOD;
+        
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();

@@ -38,7 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // バリデーションクリア（エラーメッセージなし）の場合
     if (empty($errors)) {
         // 新規レコードを挿入
-        $sql = 'INSERT INTO weight_logs (user_id, date, part, machine, weight, time, set_count, work_load, note) VALUES (:user_id, :date, :part, :machine, :weight, :time, :set_count, :work_load, :note)';
+        $sql = <<<EOD
+        INSERT INTO weight_logs (user_id, date, part, machine, weight, time, set_count, work_load, note)
+        VALUES (:user_id, :date, :part, :machine, :weight, :time, :set_count, :work_load, :note)
+        EOD;
+
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->bindValue(':date', $date, PDO::PARAM_STR);

@@ -23,7 +23,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pass_check = $_POST['pass_check'];
 
     // 入力されたユーザー名に一致するレコード数を取得
-    $sql = 'SELECT COUNT(*) FROM users WHERE name = :name';
+    $sql = <<<EOD
+    SELECT COUNT(*)
+    FROM users
+    WHERE name = :name
+    EOD;
+
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':name', $name, PDO::PARAM_STR);
     $stmt->execute();
@@ -53,14 +58,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $hash_pass = password_hash($pass, PASSWORD_DEFAULT);
 
         // ユーザー登録処理
-        $sql = 'INSERT INTO users SET name = :name, password = :pass';
+        $sql = <<<EOD
+        INSERT INTO users
+        SET name = :name, password = :pass
+        EOD;
+
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':name', $name, PDO::PARAM_STR);
         $stmt->bindValue(':pass', $hash_pass, PDO::PARAM_STR);
         $stmt->execute();
 
         // 登録に引き続き、ログイン処理を行う
-        $sql = 'SELECT * FROM users WHERE name = :name and password = :pass';
+        $sql = <<<EOD
+        SELECT *
+        FROM users
+        WHERE name = :name and password = :pass
+        EOD;
+
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':name', $name, PDO::PARAM_STR);
         $stmt->bindValue(':pass', $hash_pass, PDO::PARAM_STR);

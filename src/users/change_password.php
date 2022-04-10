@@ -26,7 +26,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pass_check = $_POST['pass_check'];
 
     // ログインユーザーのパスワードを取得
-    $sql = 'SELECT password FROM users WHERE id = :id';
+    $sql = <<<EOD
+    SELECT password
+    FROM users
+    WHERE id = :id
+    EOD;
+
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
@@ -59,7 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $hash_pass = password_hash($pass_new, PASSWORD_DEFAULT);
 
         // パスワードの更新処理を行う
-        $sql = 'UPDATE users SET password = :pass WHERE id = :id';
+        $sql = <<<EOD
+        UPDATE users
+        SET password = :pass
+        WHERE id = :id
+        EOD;
+        
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->bindValue(':pass', $hash_pass, PDO::PARAM_STR);

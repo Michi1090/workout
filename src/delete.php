@@ -19,7 +19,12 @@ if (isset($_SESSION['id'])) {
 }
 
 // 対象の筋トレログを取得
-$sql = 'SELECT date, part, machine, weight, time, set_count, work_load, note FROM weight_logs WHERE id = :id';
+$sql = <<<EOD
+SELECT date, part, machine, weight, time, set_count, work_load, note
+FROM weight_logs
+WHERE id = :id
+EOD;
+
 $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 $stmt->execute();
@@ -31,7 +36,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id = $_POST['id'];
 
     // 対象のレコードを削除
-    $sql = 'DELETE FROM weight_logs WHERE id = :id';
+    $sql = <<<EOD
+    DELETE FROM weight_logs
+    WHERE id = :id
+    EOD;
+
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':id', $id, PDO::PARAM_STR);
     $stmt->execute();

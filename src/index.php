@@ -30,7 +30,7 @@ $search_conditions = '&date=' . $date . '&part=' . $part . '&machine=' . $machin
 // 条件（where句）の生成
 $where = "";
 if (!empty($date)) {
-    $where .= ' AND date = :date';
+    $where .= 'AND date = :date';
 }
 if (!empty($part)) {
     $where .= ' AND part = :part';
@@ -40,7 +40,13 @@ if (!empty($machine)) {
 }
 
 //最大ページ数の取得
-$sql = 'SELECT COUNT(*) as cnt FROM weight_logs WHERE user_id = :user_id' . $where;
+$sql = <<<EOD
+SELECT COUNT(*) as cnt
+FROM weight_logs
+WHERE user_id = :user_id
+{$where}
+EOD;
+
 $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 if (!empty($date)) {
@@ -81,7 +87,17 @@ if ($page === $max_page && $count['cnt'] % 5 !== 0) {
 }
 
 // ページと検索条件に合致するトレーニングログを5件取得
-$sql = 'SELECT weight_logs.id, date, part, machine, weight, time, set_count, work_load, note FROM weight_logs JOIN users ON user_id = users.id WHERE user_id = :user_id' . $where . ' ORDER BY date DESC, weight_logs.id DESC LIMIT :from, 5';
+$sql = <<<EOD
+SELECT weight_logs.id, date, part, machine, weight, time, set_count, work_load, note
+FROM weight_logs
+JOIN users
+ON user_id = users.id
+WHERE user_id = :user_id
+{$where}
+ORDER BY date DESC, weight_logs.id DESC
+LIMIT :from, 5
+EOD;
+
 $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 if (!empty($date)) {
