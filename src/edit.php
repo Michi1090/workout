@@ -107,8 +107,10 @@ $path = currentRoot();
                             <form method="post">
                                 <div class="row mb-3">
                                     <label class="col-form-label col-3" for="date">日付</label>
-                                    <div class="col-9"><input class="form-control" type="date" name="date" max="9999-12-31" id="date" value="<?= escape($logs['date']) ?>" required></div>
-                                    <p class="text-danger small mb-0"><?= isset($errors['date']) ? escape($errors['date']) : '' ?></p>
+                                    <div class="col-9">
+                                        <input class="form-control" type="date" name="date" min="2000-01-01" max="2099-12-31" id="date" value="<?= escape($logs['date']) ?>" required>
+                                        <p class="text-danger small mb-0"><?= isset($errors['date']) ? escape($errors['date']) : '' ?></p>
+                                    </div>
                                 </div>
                                 <div class="row mb-3">
                                     <label class="col-form-label col-3" for="part">部位</label>
@@ -119,31 +121,39 @@ $path = currentRoot();
                                                 <option <?= $form_part === $logs['part'] ? 'selected' : '' ?>><?= escape($form_part) ?></option>
                                             <?php endforeach ?>
                                         </select>
+                                        <p class="text-danger small mb-0"><?= isset($errors['part']) ? escape($errors['part']) : '' ?></p>
                                     </div>
-                                    <p class="text-danger small mb-0"><?= isset($errors['part']) ? escape($errors['part']) : '' ?></p>
                                 </div>
                                 <div class="row mb-3">
                                     <label class="col-form-label col-3" for="machine">マシン</label>
-                                    <div class="col-9"><input class="form-control" type="text" name="machine" id="machine" maxlength="20" value="<?= escape($logs['machine']) ?>" required></div>
-                                    <p class="text-danger small mb-0"><?= isset($errors['machine']) ? escape($errors['machine']) : '' ?></p>
+                                    <div class="col-9">
+                                        <input class="form-control" type="text" name="machine" id="machine" maxlength="20" value="<?= escape($logs['machine']) ?>" required>
+                                        <p class="text-danger small mb-0"><?= isset($errors['machine']) ? escape($errors['machine']) : '' ?></p>
+                                    </div>
                                 </div>
                                 <div class="row mb-3">
                                     <label class="col-form-label col-3" for="weight">重量</label>
-                                    <div class="col-7"><input class="form-control" type="number" name="weight" id="weight" step="0.1" min="0" max="999.9" value="<?= escape($logs['weight']) ?>"></div>
+                                    <div class="col-7">
+                                        <input class="form-control" type="number" name="weight" id="weight" step="0.1" min="0" max="999.9" value="<?= escape($logs['weight']) ?>">
+                                        <p class="text-danger small mb-0"><?= isset($errors['weight']) ? escape($errors['weight']) : '' ?></p>
+                                    </div>
                                     <label class="col-form-label col-2" for="weight">kg</label>
-                                    <p class="text-danger small mb-0"><?= isset($errors['weight']) ? escape($errors['weight']) : '' ?></p>
                                 </div>
                                 <div class="row mb-3">
                                     <label class="col-form-label col-3" for="time">回数</label>
-                                    <div class="col-7"><input class="form-control" type="number" name="time" id="time" min="0" max="99" value="<?= escape($logs['time']) ?>"></div>
+                                    <div class="col-7">
+                                        <input class="form-control" type="number" name="time" id="time" min="0" max="99" value="<?= escape($logs['time']) ?>">
+                                        <p class="text-danger small mb-0"><?= isset($errors['time']) ? escape($errors['time']) : '' ?></p>
+                                    </div>
                                     <label class="col-form-label col-2" for="time">回</label>
-                                    <p class="text-danger small mb-0"><?= isset($errors['time']) ? escape($errors['time']) : '' ?></p>
                                 </div>
                                 <div class="row mb-3">
                                     <label class="col-form-label col-3" for="set_count">セット</label>
-                                    <div class="col-7"><input class="form-control" type="number" name="set_count" id="set_count" min="0" max="99" value="<?= escape($logs['set_count']) ?>"></div>
+                                    <div class="col-7">
+                                        <input class="form-control" type="number" name="set_count" id="set_count" min="0" max="99" value="<?= escape($logs['set_count']) ?>">
+                                        <p class="text-danger small mb-0"><?= isset($errors['set_count']) ? escape($errors['set_count']) : '' ?></p>
+                                    </div>
                                     <label class="col-form-label col-2" for="set_count">set</label>
-                                    <p class="text-danger small mb-0"><?= isset($errors['set_count']) ? escape($errors['set_count']) : '' ?></p>
                                 </div>
                                 <div class="row mb-3">
                                     <label class="col-form-label col-3" for="work_load">負荷</label>
@@ -155,13 +165,15 @@ $path = currentRoot();
                                                 <option <?= $form_load === $logs['work_load'] ? 'selected' : '' ?>><?= escape($form_load) ?></option>
                                             <?php endforeach ?>
                                         </select>
+                                        <p class="text-danger small mb-0"><?= isset($errors['work_load']) ? escape($errors['work_load']) : '' ?></p>
                                     </div>
-                                    <p class="text-danger small mb-0"><?= isset($errors['work_load']) ? escape($errors['work_load']) : '' ?></p>
                                 </div>
                                 <div class="row mb-4">
                                     <label class="col-form-label col-3" for="note">メモ</label>
-                                    <div class="col-9"><input class="form-control" type="text" name="note" id="note" size="50" maxlength="30" value="<?= escape($logs['note']) ?>"></div>
-                                    <p class="text-danger small mb-0"><?= isset($errors['note']) ? escape($errors['note']) : '' ?></p>
+                                    <div class="col-9">
+                                        <input class="form-control" type="text" name="note" id="note" size="50" maxlength="30" value="<?= escape($logs['note']) ?>">
+                                        <p class="text-danger small mb-0"><?= isset($errors['note']) ? escape($errors['note']) : '' ?></p>
+                                    </div>
                                 </div>
                                 <div class="d-grid gap-3">
                                     <button class="btn btn-warning" type="submit">更新</button>
